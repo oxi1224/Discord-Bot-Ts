@@ -1,0 +1,42 @@
+{
+  "name": "discord-bot",
+  "version": "1.0.0",
+  "author": "@oxi#6219",
+  "license": "CC0-1.0",
+  "description": "A simple bot for the chatting app discord.",
+  "repository": "https://github.com/oxi1224/Discord-Bot",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "yarn rimraf dist && yarn tsc",
+    "start": "yarn build && node --experimental-specifier-resolution=node --no-warnings ./dist/src/client.js",
+    "start:raw": "node --experimental-specifier-resolution=node --no-warnings ./dist/src/client.js",
+    "dev": "yarn tsc && yarn start:raw",
+    "lint": "eslint --ext .ts src"
+  },
+  "imports": {
+    "#base": {
+      "default": "./src/base/index.js"
+    },
+    "#lib": {
+      "default": "./src/lib/index.js"
+    }
+  },
+  "dependencies": {
+    "@discordjs/rest": "^0.5.0",
+    "@types/lodash": "^4.14.182",
+    "discord.js": "^14.0.3",
+    "dotenv": "^16.0.1",
+    "lodash": "^4.17.21",
+    "node-fetch": "^3.2.6",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.30.0",
+    "@typescript-eslint/parser": "^5.30.0",
+    "eslint": "^8.18.0"
+  },
+  "packageManager": "yarn@3.2.1"
+}
