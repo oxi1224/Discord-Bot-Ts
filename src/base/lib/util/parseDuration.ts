@@ -1,5 +1,11 @@
 import { TimeInMs, DurationString, type Duration } from '#base';
 
+/**
+ * Parses duration into a timestamp and adds currentTime to it.
+ * @param duration - The duration to parse.
+ * @param currentTime - The start time of this function.
+ * @returns A timesamp duration away from currentTime
+ */
 export function parseDuration(duration: Duration, currentTime: number): number | null {
   if (!duration) return null;
   const matchResult = duration.match(/\d+/);

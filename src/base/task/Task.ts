@@ -2,20 +2,35 @@ import { CustomClient } from "../CustomClient.js";
 import type { TaskOptions } from "../lib/types.js";
 
 export class Task {
+  /**
+   * Unique id of the task.
+   */
   public id: string;
-  public autoStart: boolean;
-  public delay?: number;
+
+  /**
+   * How often to run the command
+   */
+  public interval?: number;
+
+  /**
+   * The client of the task.
+   */
   public client?: CustomClient;
 
+  /**
+   * @param id - Unique id of the task.
+   * @param options - Options. 
+   */
   constructor(id: string, {
-    autoStart = true,
-    delay,
+    interval,
   }: TaskOptions) {
     this.id = id;
-    this.autoStart = autoStart;
-    this.delay = delay;
+    this.interval = interval;
   }
 
+  /**
+   * The function to execute. 
+   */
   public execute() {
     throw new Error(`Execute function empty in task ${this.id}.`);
   }

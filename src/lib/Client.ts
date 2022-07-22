@@ -30,7 +30,7 @@ export class Client extends CustomClient {
 
     this.taskHandler = new TaskHandler(this, {
       taskExportFile: '../../tasks/index.js',
-      defaultCooldown: TimeInMs.Minute * 1
+      defaultInterval: TimeInMs.Minute * 1
     });
 
     this.db = new Sequelize(process.env.DATABASE_URL ?? '', {

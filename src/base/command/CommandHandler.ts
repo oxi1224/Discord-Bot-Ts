@@ -11,13 +11,40 @@ import { CustomClient } from '../CustomClient.js';
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN ?? '');
 
 export class CommandHandler extends EventEmitter {
+  /**
+   * Array of commands to handle.
+   */
   private commandArray: Command[] = [];
+
+  /**
+   * Path to the file containing exports of all classes.
+   */
   private exportFileDirectory: string;
+
+  /**
+   * The prefix for commands.
+   */
   private prefix: string;
+
+  /**
+   * The client of the handler.
+   */
   public client: CustomClient;
+
+  /**
+   * The regex which determines if a value is a flag.
+   */
   public flagRegex: RegExp;
+
+  /**
+   * The regex for replacing characters in command alias.
+   */
   public aliasReplacement: RegExp | undefined;
 
+  /**
+   * @param client - Client object.
+   * @param options - Options.
+   */
   constructor(client: CustomClient, {
     commandExportFile,
     prefix = '!',
@@ -32,6 +59,9 @@ export class CommandHandler extends EventEmitter {
     this.aliasReplacement = aliasReplacement;
   }
   
+  /**
+   * Imports everything from exportFileDirectory, turns the commands into classes and pushes them to commandArray.
+   */
   private async loadAll() {
     const slashCommands: SlashCommandBuilder[] = [];
     Object.entries(await import(this.exportFileDirectory) as { [key: string]: ClassConstructor<Command> })
@@ -45,6 +75,11 @@ export class CommandHandler extends EventEmitter {
       });
   }
 
+  /**
+   * Loads a slash command.
+   * @param command - The Command class.
+   * @param slashCommands - Array of previous slash commands.
+   */
   public async loadSlash(command: Command, slashCommands: SlashCommandBuilder[]) {
     const name = command.id;
     const args = command.args;
@@ -69,6 +104,9 @@ export class CommandHandler extends EventEmitter {
     }
   }
 
+  /**
+   * Starts the command listeners.
+   */
   public start() {
     this.client.once('ready', async () => {
       await this.loadAll();

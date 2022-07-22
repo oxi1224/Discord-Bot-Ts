@@ -7,26 +7,61 @@ import { parseDuration } from "../lib/util/parseDuration.js";
 import { CommandHandler } from "./CommandHandler.js";
 import { CustomClient } from "../CustomClient.js";
 
-export class BaseCommand {
-  public id: string;
-
-  constructor(id: string) {
-    this.id = id;
-  }
-}
-
 export class Command {
+  /**
+   * Unique id of the command.
+   */
   public id: string;
+
+  /**
+   * Aliases that trigger the command.
+   */
   public aliases: string[];
+
+  /**
+   * Arguments for the command.
+   */
   public args: CommandArgument[];
+
+  /**
+   * Required permissions to use the command.
+   */
   public userPermissions: bigint;
+
+  /**
+   * Description of the command.
+   */
   public description: string;
+
+  /**
+   * Whether or not the command supports interactions.
+   */
   public slash: boolean;
+
+  /**
+   * Array of argument classes.
+   */
   public argumentArray: Argument[];
+
+  /**
+   * Number of flags the command includes.
+   */
   public flagCount: number;
+
+  /**
+   * The client of the command.
+   */
   public client?: CustomClient;
+
+  /**
+   * The command handler of the command.
+   */
   public commandHandler?: CommandHandler;
 
+  /**
+   * @param id - Unique id of the command
+   * @param options - Options 
+   */
   constructor(id: string, {
     aliases,
     args = [],
@@ -44,16 +79,31 @@ export class Command {
     this.flagCount = (this.argumentArray.filter(arg => arg.type === 'flag')).length;
   }
 
+  /**
+   * The function to run when the command is executed.
+   * @param message - Discord.js Message or CommandInteraction object.
+   * @param args - Parsed arguments for the command.
+   */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public execute(message: Message | CommandInteraction, args: ParsedArgs | null): void {
     throw new Error(`Execute function empty in ${this.id} command.`);
   }
 
+  /**
+   * The function to run when the slash command is executed
+   * @param interaction - Discord.js CommandInteraction object.
+   * @param args - Parsed arguments for the command.
+   */
   public executeSlash(interaction: CommandInteraction, args: ParsedArgs | null): void {
     this.execute(interaction, args);
   }
 
-  public initArgs(args: CommandArgument[]) {
+  /**
+   * Parses the command's args into array of argument classes.
+   * @param args - Args to get parsed into classes.
+   * @returns Array of arguments represented as classes.
+   */
+  private initArgs(args: CommandArgument[]): Argument[] {
     const argArray: Argument[] = [];
     args.forEach(arg => {
       argArray.push(new Argument(this, arg));
@@ -61,6 +111,12 @@ export class Command {
     return argArray;
   }
 
+  /**
+   * Parses arguments into values from a message, when a CommandInteraction is passed, executes parseSlash.
+   * @param message - Discord.js Message or CommandInteraction object.
+   * @param argumentArray - The arguments to parse.
+   * @returns Parsed command arguments.
+   */
   public async parseArgs(message: Message | CommandInteraction, argumentArray: Argument[]): Promise<ParsedArgs | null> {
     if (message instanceof CommandInteraction) return this.parseSlash(message, argumentArray);
     const contentArray: string[] = message.content.split(' ');
@@ -129,6 +185,12 @@ export class Command {
     return args;
   }
 
+  /**
+   * Parses interaction arguments into values.
+   * @param interaction - Discord.js CommandInteraction object.
+   * @param argumentArray - The arguments to parse.
+   * @returns Parsed command arguments.
+   */
   public parseSlash(interaction: CommandInteraction, argumentArray: Argument[]): ParsedArgs | null {
     const args: ParsedArgs = {};
     argumentArray.forEach(arg => {

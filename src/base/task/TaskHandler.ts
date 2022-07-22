@@ -5,23 +5,46 @@ import { Task } from "./Task.js";
 import { EventEmitter } from "events";
 
 export class TaskHandler extends EventEmitter {
+  /**
+   * Array of tasks to handle.
+   */
   private taskArray: Task[] = [];
-  public client: CustomClient; 
-  public taskExportFile: string;
-  public defaultCooldown: number;
 
+  /**
+   * The client of the handler.
+   */
+  public client: CustomClient;
+  
+  /**
+   * Path to the file containing exports of all classes.
+   */
+  public exportFileDirectory: string;
+
+  /**
+   * The default interval of the tasks.
+   */
+  public defaultInterval: number;
+
+  /**
+   * 
+   * @param client - Client object.
+   * @param options - Options. 
+   */
   constructor(client: CustomClient, {
     taskExportFile,
-    defaultCooldown = TimeInMs.Minute * 1,
+    defaultInterval = TimeInMs.Minute * 1,
   }: TaskHandlerOptions) {
     super();
     this.client = client;
-    this.taskExportFile = taskExportFile;
-    this.defaultCooldown = defaultCooldown;
+    this.exportFileDirectory = taskExportFile;
+    this.defaultInterval = defaultInterval;
   }
 
+  /**
+   * Imports everything from exportFileDirectory, turns the tasks into classes and pushes them to taskArray.
+   */
   private async loadAll() {
-    Object.entries(await import(this.taskExportFile) as { [key: string]: ClassConstructor<Task> })
+    Object.entries(await import(this.exportFileDirectory) as { [key: string]: ClassConstructor<Task> })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .forEach(([key, task]) => {
         const currentTask = new task();
@@ -32,10 +55,13 @@ export class TaskHandler extends EventEmitter {
       });
   }
 
+  /**
+   * Sets the intervals of each task.
+   */
   public start() {
     this.client.once('ready', async () => {
       await this.loadAll();
-      this.taskArray.forEach(task => setInterval(() => task.execute(), task.delay ?? this.defaultCooldown));
+      this.taskArray.forEach(task => setInterval(() => task.execute(), task.interval ?? this.defaultInterval));
     });
   }
 }

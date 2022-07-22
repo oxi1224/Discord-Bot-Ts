@@ -41,12 +41,11 @@ export type ParsedArgs = { [key: string]: string | boolean | number | User | Non
 
 export type TaskHandlerOptions = {
   taskExportFile: string,
-  defaultCooldown: number,
+  defaultInterval: number,
 }
 
 export type TaskOptions = {
-  autoStart?: boolean,
-  delay?: number
+  interval?: number
 }
 
 export type ListenerHandlerOptions = {
