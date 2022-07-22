@@ -133,6 +133,10 @@ export class Command {
     const args: ParsedArgs = {};
     argumentArray.forEach(arg => {
       if (['user', 'channel', 'role'].includes(arg.type)) return args[arg.id] = interaction.options.get(arg.id);
+      if (arg.type === 'duration') return args[arg.id] = parseDuration(
+        interaction.options.get(arg.id)?.value as Duration,
+        new Date().getTime()
+      );
       return args[arg.id] = interaction.options.get(arg.id)?.value;
     });
     return args;

@@ -1,5 +1,5 @@
-import { CustomClient } from "../CustomClient";
-import type { TaskHandlerOptions, TaskConstructor } from "../lib/types.js";
+import { CustomClient } from "../CustomClient.js";
+import type { TaskHandlerOptions, ClassConstructor } from "../lib/types.js";
 import { TimeInMs } from "../lib/constants.js";
 import { Task } from "./Task.js";
 import { EventEmitter } from "events";
@@ -21,7 +21,7 @@ export class TaskHandler extends EventEmitter {
   }
 
   private async loadAll() {
-    Object.entries(await import(this.taskExportFile) as { [key: string]: TaskConstructor })
+    Object.entries(await import(this.taskExportFile) as { [key: string]: ClassConstructor<Task> })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .forEach(([key, task]) => {
         const currentTask = new task();

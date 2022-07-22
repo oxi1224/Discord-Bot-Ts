@@ -5,7 +5,7 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
 import { Command } from '../command/Command.js';
 import { slashOptions } from '../lib/constants.js';
-import type { CommandHandlerOptions, CommandConstructor, ParsedArgs } from '../lib/types.js';
+import type { CommandHandlerOptions, ClassConstructor, ParsedArgs } from '../lib/types.js';
 import { CustomClient } from '../CustomClient.js';
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN ?? '');
@@ -34,7 +34,7 @@ export class CommandHandler extends EventEmitter {
   
   private async loadAll() {
     const slashCommands: SlashCommandBuilder[] = [];
-    Object.entries(await import(this.exportFileDirectory) as { [key: string]: CommandConstructor })
+    Object.entries(await import(this.exportFileDirectory) as { [key: string]: ClassConstructor<Command> })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .forEach(([key, command]) => {
         const cmd = new command();

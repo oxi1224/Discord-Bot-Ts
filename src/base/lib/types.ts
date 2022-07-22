@@ -1,12 +1,14 @@
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
-import { User, Role, NonThreadGuildBasedChannel, UserResolvable, CommandInteractionOption } from "discord.js";
-import { Command } from '../command/Command.js';
+import { User, Role, NonThreadGuildBasedChannel, Snowflake, CommandInteractionOption } from "discord.js";
 import { DurationString } from "./constants.js";
-import { Task } from "../task/Task.js";
+import { EventEmitter } from 'events';
+
+export type ClassConstructor<constructable> = {
+  new (): constructable,
+}
 
 export type CustomClientOptions = {
-  owners: UserResolvable[],
-  specialUsers: UserResolvable[]
+  owners: Snowflake[],
 }
 
 export type CommandHandlerOptions = {
@@ -14,10 +16,6 @@ export type CommandHandlerOptions = {
   prefix: string,
   flagRegex?: RegExp,
   aliasReplacement?: RegExp
-}
-
-export type CommandConstructor = {
-  new (): Command,
 }
 
 export type CommandOptions = {
@@ -46,11 +44,16 @@ export type TaskHandlerOptions = {
   defaultCooldown: number,
 }
 
-export type TaskConstructor = {
-  new (): Task
-}
-
 export type TaskOptions = {
   autoStart?: boolean,
   delay?: number
+}
+
+export type ListenerHandlerOptions = {
+  listenerExportFile: string
+}
+
+export type ListenerOptions = {
+  emitter: EventEmitter,
+  event: string
 }

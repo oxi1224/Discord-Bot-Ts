@@ -5,6 +5,6 @@ export function parseDuration(duration: Duration, currentTime: number): number |
   const matchResult = duration.match(/\d+/);
   if (!matchResult) return null;
   const timeNumber = matchResult[0];
-  const timeString = duration.split('').slice(timeNumber.length, duration.length).join('');
+  const timeString = duration.split('').slice(timeNumber.length, duration.length).join('').trim();
   return (parseInt(timeNumber) * TimeInMs[DurationString[timeString.toLowerCase() as keyof typeof DurationString]]) + currentTime;
 }
