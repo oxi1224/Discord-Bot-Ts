@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import { CustomClient } from '../CustomClient.js';
 import { ListenerHandler } from './ListenerHandler.js';
 
-export class Listener {
+export abstract class Listener {
   /**
    * Unique id of the Listener.
    */

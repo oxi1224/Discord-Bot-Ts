@@ -1,1 +1,1 @@
-export * from './Client.js';
+export * from './extensions/Client.js';

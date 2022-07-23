@@ -2,9 +2,9 @@ import 'dotenv/config';
 import { GatewayIntentBits } from 'discord-api-types/v10';
 import { CommandHandler, CustomClient, TaskHandler, TimeInMs, ListenerHandler } from '#base';
 import { Sequelize } from 'sequelize';
-import { GuildConfig } from './models/GuildConfig.js';
-import { ExpiringPunishments } from './models/ExpiringPunishments.js';
-import { Modlogs } from './models/Modlogs.js';
+import { GuildConfig } from '../models/GuildConfig.js';
+import { ExpiringPunishments } from '../models/ExpiringPunishments.js';
+import { Modlogs } from '../models/Modlogs.js';
 
 
 export class Client extends CustomClient {

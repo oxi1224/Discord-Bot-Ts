@@ -15,14 +15,17 @@ export type CommandHandlerOptions = {
   commandExportFile: string,
   prefix: string,
   flagRegex?: RegExp,
-  aliasReplacement?: RegExp
+  aliasReplacement?: RegExp,
 }
 
 export type CommandOptions = {
   aliases: string[],
   args: CommandArgument[],
   userPermissions?: bigint,
-  description: string
+  description: string,
+  usage: string,
+  examples: string[],
+  category: string,
   slash?: boolean,
 }
 
@@ -45,14 +48,14 @@ export type TaskHandlerOptions = {
 }
 
 export type TaskOptions = {
-  interval?: number
+  interval?: number,
 }
 
 export type ListenerHandlerOptions = {
-  listenerExportFile: string
+  listenerExportFile: string,
 }
 
 export type ListenerOptions = {
   emitter: EventEmitter,
-  event: string
+  event: string,
 }

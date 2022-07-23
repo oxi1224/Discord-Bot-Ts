@@ -1,7 +1,7 @@
 import { CustomClient } from "../CustomClient.js";
 import type { TaskOptions } from "../lib/types.js";
 
-export class Task {
+export abstract class Task {
   /**
    * Unique id of the task.
    */

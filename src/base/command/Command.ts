@@ -7,7 +7,7 @@ import { parseDuration } from "../lib/util/parseDuration.js";
 import { CommandHandler } from "./CommandHandler.js";
 import { CustomClient } from "../CustomClient.js";
 
-export class Command {
+export abstract class Command {
   /**
    * Unique id of the command.
    */
@@ -39,6 +39,21 @@ export class Command {
   public slash: boolean;
 
   /**
+   * Usage templte of the command.
+   */
+  public usage: string;
+
+  /**
+   * Examples of how the command should be used.
+   */
+  public examples: string[];
+
+  /**
+   * The category the command belongs to.
+   */
+  public category: string;
+
+  /**
    * Array of argument classes.
    */
   public argumentArray: Argument[];
@@ -67,6 +82,9 @@ export class Command {
     args = [],
     userPermissions = PermissionFlagsBits.SendMessages,
     description = '',
+    usage,
+    examples,
+    category,
     slash = true,
   }: CommandOptions) {
     this.id = id;
@@ -75,6 +93,9 @@ export class Command {
     this.userPermissions = userPermissions;
     this.description = description;
     this.slash = slash;
+    this.usage = usage;
+    this.examples = examples;
+    this.category = category;
     this.argumentArray = this.initArgs(args);
     this.flagCount = (this.argumentArray.filter(arg => arg.type === 'flag')).length;
   }
