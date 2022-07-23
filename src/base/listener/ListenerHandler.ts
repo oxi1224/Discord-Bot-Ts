@@ -1,14 +1,14 @@
 import 'dotenv/config';
 import { EventEmitter } from 'events';
 import type { ListenerHandlerOptions, ClassConstructor } from '../lib/types.js';
-import { Listener } from './Listener.js';
+import { BaseListener } from './Listener.js';
 import { CustomClient } from '../CustomClient.js';
 
-export class ListenerHandler extends EventEmitter {
+export class BaseListenerHandler extends EventEmitter {
   /**
    * Array of listeners to handle.
    */
-  private listenerArray: Listener[] = [];
+  private listenerArray: BaseListener[] = [];
 
   /**
    * Path to the file containing exports of all classes.
@@ -38,12 +38,11 @@ export class ListenerHandler extends EventEmitter {
    * Imports everything from exportFileDirectory, turns the listeners into classes and pushes them to listenerArray.
    */
   private async loadAll() {
-    Object.entries(await import(this.exportFileDirectory) as { [key: string]: ClassConstructor<Listener> })
+    Object.entries(await import(this.exportFileDirectory) as { [key: string]: ClassConstructor<BaseListener> })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .forEach(([key, command]) => {
         const listener = new command();
         if (this.listenerArray.find(l => l.id === l.id)) throw new Error(`Listener IDs must be unique. (${listener.id})`);
-        listener.client = this.client;
         this.listenerArray.push(listener);
       });
   }

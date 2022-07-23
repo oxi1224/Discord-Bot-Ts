@@ -9,10 +9,10 @@
   "type": "module",
   "scripts": {
     "build": "yarn rimraf dist && yarn tsc",
-    "start": "yarn build && node ./dist/src/bot.js",
     "start:raw": "node ./dist/src/bot.js",
     "dev": "yarn tsc && yarn start:raw",
-    "lint": "eslint --ext .ts src"
+    "start": "yarn build && yarn start:raw",
+    "lint": "yarn eslint --ext .ts src"
   },
   "imports": {
     "#base": {
@@ -41,6 +41,10 @@
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",
     "eslint": "^8.18.0"
+  },
+  "engines": {
+    "node": "18.x",
+    "yarn": "3.2.1"
   },
   "packageManager": "yarn@3.2.1"
 }

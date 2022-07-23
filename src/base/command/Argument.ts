@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
-import { Command } from "./Command.js";
+import { BaseCommand } from "./Command.js";
 import type { CommandArgument, CommandArgumentType } from "../lib/types.js";
 
 /**
@@ -10,7 +10,7 @@ export class Argument {
   /**
    * The command this argument belongs to.
    */
-  public command: Command;
+  public command: BaseCommand;
 
   /**
    * The id of this argument.
@@ -51,7 +51,7 @@ export class Argument {
    * @param command - The command this argument belongs to.
    * @param options - Options.
    */
-  constructor(command: Command, {
+  constructor(command: BaseCommand, {
     id,
     type,
     optional = true,

@@ -1,7 +1,7 @@
-import { CustomClient } from "../CustomClient.js";
 import type { TaskOptions } from "../lib/types.js";
+import { BaseTaskHandler } from "./TaskHandler.js";
 
-export abstract class Task {
+export abstract class BaseTask {
   /**
    * Unique id of the task.
    */
@@ -13,9 +13,9 @@ export abstract class Task {
   public interval?: number;
 
   /**
-   * The client of the task.
+   * The handler of the listener.
    */
-  public client?: CustomClient;
+  public taskHandler?: BaseTaskHandler;
 
   /**
    * @param id - Unique id of the task.
@@ -33,9 +33,5 @@ export abstract class Task {
    */
   public execute() {
     throw new Error(`Execute function empty in task ${this.id}.`);
-  }
-
-  set clientSetter(client: CustomClient) {
-    this.client = client;
   }
 }

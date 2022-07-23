@@ -1,9 +1,9 @@
 import { ListenerOptions } from '../lib/types.js';
 import { EventEmitter } from 'events';
 import { CustomClient } from '../CustomClient.js';
-import { ListenerHandler } from './ListenerHandler.js';
+import { BaseListenerHandler } from './ListenerHandler.js';
 
-export abstract class Listener {
+export abstract class BaseListener {
   /**
    * Unique id of the Listener.
    */
@@ -20,14 +20,9 @@ export abstract class Listener {
   public event: string;
 
   /**
-   * The client of the listener.
-   */
-  public client?: CustomClient;
-
-  /**
    * The handler of the listener.
    */
-  public listenerHandler?: ListenerHandler;
+  public listenerHandler?: BaseListenerHandler;
 
   /**
    * @param id - The unique id of the listener.
@@ -49,10 +44,5 @@ export abstract class Listener {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public execute(value: unknown) {
     throw new Error(`Execute function cannot be empty. ${this.id}`);
-  }
-
-  set clientSetter(client: CustomClient) {
-    this.client = client;
-    this.listenerHandler = client.listenerHandler;
   }
 }

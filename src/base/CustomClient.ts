@@ -1,8 +1,8 @@
 import { Client, ClientOptions, Snowflake, UserResolvable } from 'discord.js';
-import { CommandHandler } from './command/CommandHandler.js';
-import { TaskHandler } from './task/TaskHandler.js';
+import { BaseCommandHandler } from './command/CommandHandler.js';
+import { BaseTaskHandler } from './task/TaskHandler.js';
 import { CustomClientOptions } from './lib/types.js';
-import { ListenerHandler } from './listener/ListenerHandler.js';
+import { BaseListenerHandler } from './listener/ListenerHandler.js';
 
 export class CustomClient extends Client {
   /**
@@ -13,17 +13,17 @@ export class CustomClient extends Client {
   /**
    * The command handler of the client.
    */
-  public commandHandler?: CommandHandler;
+  public commandHandler?: BaseCommandHandler;
 
   /**
    * The task handler of the client.
    */
-  public taskHandler?: TaskHandler;
+  public taskHandler?: BaseTaskHandler;
   
   /**
    * The listener handler of the client.
    */
-  public listenerHandler?: ListenerHandler;
+  public listenerHandler?: BaseListenerHandler;
 
   /**
    * @param clientOptions - Options for the Discord.js Client class

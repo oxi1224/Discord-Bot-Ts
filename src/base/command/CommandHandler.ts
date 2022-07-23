@@ -3,18 +3,18 @@ import { EventEmitter } from 'events';
 import { Interaction, Message, SlashCommandBuilder, InteractionType } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
-import { Command } from '../command/Command.js';
+import { BaseCommand } from '../command/Command.js';
 import { slashOptions } from '../lib/constants.js';
 import type { CommandHandlerOptions, ClassConstructor, ParsedArgs } from '../lib/types.js';
 import { CustomClient } from '../CustomClient.js';
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN ?? '');
 
-export class CommandHandler extends EventEmitter {
+export class BaseCommandHandler extends EventEmitter {
   /**
    * Array of commands to handle.
    */
-  private commandArray: Command[] = [];
+  public commandArray: BaseCommand[] = [];
 
   /**
    * Path to the file containing exports of all classes.
@@ -64,12 +64,11 @@ export class CommandHandler extends EventEmitter {
    */
   private async loadAll() {
     const slashCommands: SlashCommandBuilder[] = [];
-    Object.entries(await import(this.exportFileDirectory) as { [key: string]: ClassConstructor<Command> })
+    Object.entries(await import(this.exportFileDirectory) as { [key: string]: ClassConstructor<BaseCommand> })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .forEach(([key, command]) => {
         const cmd = new command();
         if (this.commandArray.find(c => c.id === cmd.id)) throw new Error(`Command IDs must be unique. (${cmd.id})`);
-        cmd.client = this.client;
         this.commandArray.push(cmd);
         if (cmd.slash) this.loadSlash(cmd, slashCommands);
       });
@@ -80,7 +79,7 @@ export class CommandHandler extends EventEmitter {
    * @param command - The Command class.
    * @param slashCommands - Array of previous slash commands.
    */
-  public async loadSlash(command: Command, slashCommands: SlashCommandBuilder[]) {
+  public async loadSlash(command: BaseCommand, slashCommands: SlashCommandBuilder[]) {
     const name = command.id;
     const args = command.args;
     const description = command.description;

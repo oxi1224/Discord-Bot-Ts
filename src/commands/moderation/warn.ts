@@ -1,6 +1,7 @@
-import { Command, type Duration } from '#base';
+import { type Duration } from '#base';
 import { Message, CommandInteraction, User } from 'discord.js';
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
+import { Command } from '#lib';
 
 export default class WarnCommand extends Command {
   constructor() {
@@ -19,15 +20,12 @@ export default class WarnCommand extends Command {
           type: 'string',
           slashType: ApplicationCommandOptionType.String,
           description: 'The user to warn'
-        },
-        {
-          id: 'flag',
-          type: 'flag',
-          slashType: ApplicationCommandOptionType.Boolean,
-          description: 'test flag'
         }
       ],
-      description: 'Warns a member'
+      description: 'Warns a member',
+      usage: 'warn <member> <reason>',
+      examples: ['warn @oxi#6219 spamming'],
+      category: 'Moderation'
     });
   }
 

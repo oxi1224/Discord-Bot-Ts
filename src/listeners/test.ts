@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { Listener } from "#base";
+import { Listener } from "#lib";
 import { client } from "../bot.js";
 
 export class TestListener extends Listener {
@@ -11,6 +11,6 @@ export class TestListener extends Listener {
   }
 
   public override execute(message: Message): void {
-    console.log(message);
+    return;
   }
 }

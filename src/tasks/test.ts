@@ -1,4 +1,4 @@
-import { Task } from "#base";
+import { Task } from "#lib";
 
 export default class TestTask extends Task {
   constructor() {
@@ -6,6 +6,6 @@ export default class TestTask extends Task {
   }
 
   public override execute() {
-    console.log('test task');
+    return;
   }
 }

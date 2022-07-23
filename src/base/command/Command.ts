@@ -4,10 +4,10 @@ import { Argument } from "./Argument.js";
 import { regex } from "../lib/constants.js";
 import type { CommandArgument, CommandArgumentType, CommandOptions, Duration, ParsedArgs } from "../lib/types.js";
 import { parseDuration } from "../lib/util/parseDuration.js";
-import { CommandHandler } from "./CommandHandler.js";
+import { BaseCommandHandler } from "./CommandHandler.js";
 import { CustomClient } from "../CustomClient.js";
 
-export abstract class Command {
+export abstract class BaseCommand {
   /**
    * Unique id of the command.
    */
@@ -64,14 +64,9 @@ export abstract class Command {
   public flagCount: number;
 
   /**
-   * The client of the command.
-   */
-  public client?: CustomClient;
-
-  /**
    * The command handler of the command.
    */
-  public commandHandler?: CommandHandler;
+  public commandHandler?: BaseCommandHandler;
 
   /**
    * @param id - Unique id of the command
@@ -223,10 +218,5 @@ export abstract class Command {
       return args[arg.id] = interaction.options.get(arg.id)?.value;
     });
     return args;
-  }
-
-  set clientSetter(client: CustomClient) {
-    this.client = client;
-    this.commandHandler = client.commandHandler;
   }
 }
