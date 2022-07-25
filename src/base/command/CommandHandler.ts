@@ -81,7 +81,7 @@ export class BaseCommandHandler extends EventEmitter {
    */
   public async loadSlash(command: BaseCommand, slashCommands: SlashCommandBuilder[]) {
     const name = command.id;
-    const args = command.args;
+    const args = command.argumentArray;
     const description = command.description;
     const slashCommand = new SlashCommandBuilder();
 

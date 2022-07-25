@@ -23,8 +23,6 @@ export default class PingCommand extends Command {
       ])
       .setColor(colors.base);
       
-    return message.reply({
-      embeds: [embed]
-    });
+    return message.reply({ embeds: [embed] });
   }
 }

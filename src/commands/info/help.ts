@@ -10,8 +10,7 @@ export default class HelpCommand extends Command {
         id: 'command',
         description: 'The command to display info about.',
         type: 'string',
-        slashType: ApplicationCommandOptionType.String,
-        optional: true
+        slashType: ApplicationCommandOptionType.String
       }],
       description: 'Displays info about a command',
       usage: 'help [command]',
@@ -53,7 +52,7 @@ export default class HelpCommand extends Command {
         const commandArgs: string[] = [];
         matchingCommand.args.forEach(arg => {
           commandArgs.push(`
-\`\`${arg.optional ? `[${arg.id}]` : `<${arg.id}>`}\`\`
+\`\`${arg.required ? `<${arg.id}>` : `[${arg.id}]`}\`\`
 » **Desc**: ${arg.description}
 » **Type**: ${arg.type}
           `.trim());

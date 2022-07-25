@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
-import { CommandArgument } from './types.js';
+import { Argument } from '../command/Argument.js';
 
 export enum TimeInMs {
   Milisecond = 1,
@@ -38,25 +38,25 @@ export const regex = {
 };
 
 export const slashOptions = {
-  '3': (slashCommand: SlashCommandBuilder, arg: CommandArgument) => slashCommand.addStringOption(option => option.setName(arg.id)
+  '3': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addStringOption(option => option.setName(arg.id)
     .setDescription(arg.description ?? '')
-    .setRequired(!arg.optional)),
-  '4': (slashCommand: SlashCommandBuilder, arg: CommandArgument) => slashCommand.addIntegerOption(option => option.setName(arg.id)
+    .setRequired(arg.required)),
+  '4': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addIntegerOption(option => option.setName(arg.id)
     .setDescription(arg.description ?? '')
-    .setRequired(!arg.optional)),
-  '5': (slashCommand: SlashCommandBuilder, arg: CommandArgument) => slashCommand.addBooleanOption(option => option.setName(arg.id)
+    .setRequired(arg.required)),
+  '5': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addBooleanOption(option => option.setName(arg.id)
     .setDescription(arg.description ?? '')
-    .setRequired(!arg.optional)),
-  '6': (slashCommand: SlashCommandBuilder, arg: CommandArgument) => slashCommand.addUserOption(option => option.setName(arg.id)
+    .setRequired(arg.required)),
+  '6': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addUserOption(option => option.setName(arg.id)
     .setDescription(arg.description ?? '')
-    .setRequired(!arg.optional)),
-  '7': (slashCommand: SlashCommandBuilder, arg: CommandArgument) => slashCommand.addChannelOption(option => option.setName(arg.id)
+    .setRequired(arg.required)),
+  '7': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addChannelOption(option => option.setName(arg.id)
     .setDescription(arg.description ?? '')
-    .setRequired(!arg.optional)),
-  '8': (slashCommand: SlashCommandBuilder, arg: CommandArgument) => slashCommand.addRoleOption(option => option.setName(arg.id)
+    .setRequired(arg.required)),
+  '8': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addRoleOption(option => option.setName(arg.id)
     .setDescription(arg.description ?? '')
-    .setRequired(!arg.optional)),
-  '10': (slashCommand: SlashCommandBuilder, arg: CommandArgument) => slashCommand.addNumberOption(option => option.setName(arg.id)
+    .setRequired(arg.required)),
+  '10': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addNumberOption(option => option.setName(arg.id)
     .setDescription(arg.description ?? '')
-    .setRequired(!arg.optional)),
+    .setRequired(arg.required)),
 };

@@ -40,7 +40,7 @@ export class BaseListenerHandler extends EventEmitter {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .forEach(([key, command]) => {
         const listener = new command();
-        if (this.listenerArray.find(l => l.id === l.id)) throw new Error(`Listener IDs must be unique. (${listener.id})`);
+        if (this.listenerArray.find(l => l.id === listener.id)) throw new Error(`Listener IDs must be unique. (${listener.id})`);
         this.listenerArray.push(listener);
       });
   }

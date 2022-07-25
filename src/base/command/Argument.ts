@@ -23,9 +23,9 @@ export class Argument {
   public type: CommandArgumentType;
 
   /**
-   * Whether or not this argument is optional.
+   * Whether or not this argument is required.
    */
-  public optional?: boolean;
+  public required: boolean;
 
   /**
    * The type of this argument (if command has slash set to true).
@@ -35,7 +35,7 @@ export class Argument {
   /**
    * The description of this argument.
    */
-  public description?: string;
+  public description: string;
 
   /**
    * The index of this argument in the command's argument array.
@@ -54,7 +54,7 @@ export class Argument {
   constructor(command: BaseCommand, {
     id,
     type,
-    optional = true,
+    required = false,
     slashType,
     description = '',
     length = Infinity,
@@ -62,7 +62,7 @@ export class Argument {
     this.command = command;
     this.id = id;
     this.type = type;
-    this.optional = optional;
+    this.required = required;
     this.slashType = slashType;
     this.description = description;
     this.index = command.args.findIndex(arg => arg.id === this.id);

@@ -194,7 +194,7 @@ export abstract class BaseCommand {
 
       let test = i;
       test++;
-      if (value === null && arg.optional && argumentArray[test]) argumentArray[test].index = i;
+      if (value === null && !arg.required && argumentArray[test]) argumentArray[test].index = i;
       else argumentArray[i].index = i;
     }
     return args;

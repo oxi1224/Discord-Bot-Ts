@@ -6,3 +6,4 @@ export * from './extensions/TaskHandler.js';
 export * from './extensions/Listener.js';
 export * from './extensions/ListenerHandler.js';
 export * from './common/constants.js';
+export * as embeds from './common/embeds.js';

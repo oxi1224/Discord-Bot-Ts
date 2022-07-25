@@ -11,7 +11,7 @@ export default class WarnCommand extends Command {
         {
           id: 'user',
           type: 'user',
-          optional: false,
+          required: true,
           slashType: ApplicationCommandOptionType.User,
           description: 'The user to warn'
         },

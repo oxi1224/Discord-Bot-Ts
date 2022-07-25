@@ -32,7 +32,7 @@ export type CommandOptions = {
 export type CommandArgument = {
   id: string,
   type: CommandArgumentType,
-  optional?: boolean,
+  required?: boolean,
   slashType?: ApplicationCommandOptionType,
   description?: string,
   length?: number,
