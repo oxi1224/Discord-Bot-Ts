@@ -5,7 +5,6 @@ import { regex } from "../lib/constants.js";
 import type { CommandArgument, CommandArgumentType, CommandOptions, Duration, ParsedArgs } from "../lib/types.js";
 import { parseDuration } from "../lib/util/parseDuration.js";
 import { BaseCommandHandler } from "./CommandHandler.js";
-import { CustomClient } from "../CustomClient.js";
 
 export abstract class BaseCommand {
   /**

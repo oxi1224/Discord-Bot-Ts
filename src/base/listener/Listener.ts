@@ -1,6 +1,5 @@
 import { ListenerOptions } from '../lib/types.js';
 import { EventEmitter } from 'events';
-import { CustomClient } from '../CustomClient.js';
 import { BaseListenerHandler } from './ListenerHandler.js';
 
 export abstract class BaseListener {

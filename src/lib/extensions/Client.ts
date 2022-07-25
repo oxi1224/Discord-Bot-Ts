@@ -51,8 +51,8 @@ export class Client extends CustomClient {
 
     this.commandHandler.on('slashLoadStart', interaction => console.log(`Loading ${interaction.name} (/) command.`));
     this.commandHandler.on('slashLoadFinish', interaction => console.log(`${interaction.name} (/) command loaded.`));
-    this.taskHandler.on('taskLoad', task => console.log(`${task.id} listener loaded.`));
-    this.listenerHandler.on('listenerLoad', listener => console.log(`${listener.id} task loaded.`));
+    this.taskHandler.on('taskLoad', task => console.log(`${task.id} task loaded.`));
+    this.listenerHandler.on('listenerLoad', listener => console.log(`${listener.id} listener loaded.`));
   }
 
   public async dbInit() {

@@ -20,9 +20,7 @@ export class BaseListenerHandler extends EventEmitter {
    */
   public client: CustomClient;
 
-
   /**
-   * 
    * @param client - Client object.
    * @param options - Options. 
    */
