@@ -1,5 +1,5 @@
 import { BaseListener } from "#base";
-import { client } from "../../bot.js";
+import { client } from "../../../bot.js";
 import { Client } from "./Client.js";
 import { ListenerHandler } from "./ListenerHandler.js";
 

@@ -48,13 +48,11 @@ export class BaseListenerHandler extends EventEmitter {
   /**
    * Starts the listeners.
    */
-  public start() {
-    this.client.once('ready', async () => {
-      await this.loadAll();
-      this.listenerArray.forEach(listener => {
-        listener.emitter.on(listener.event, (val) => listener.execute(val));
-        this.emit('listenerLoad', listener);
-      });
+  public async start() {
+    await this.loadAll();
+    this.listenerArray.forEach(listener => {
+      listener.emitter.on(listener.event, (val) => listener.execute(val));
+      this.emit('listenerLoad', listener);
     });
   }
 }

@@ -1,6 +1,5 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 import { Snowflake } from "discord.js";
-import { Duration } from "#base";
 
 export class Modlogs extends Model {
   /**
@@ -36,12 +35,12 @@ export class Modlogs extends Model {
   /**
    * Expiration timestamp of the punishment. Defaults to 'False'
    */
-  declare expires: number | string;
+  declare expires: number | null;
 
   /**
    * String value of the duration of the punishment. (e.g 2days)
    */
-  declare duration: string;
+  declare duration: string | null;
 
   public static initialize(sequelize: Sequelize) {
     Modlogs.init({
@@ -65,6 +64,6 @@ export type PunishmentInfo = {
   moderatorId: Snowflake,
   type: PunishmentType,
   reason?: string,
-  expires?: number | string,
-  duration?: Duration
+  expires?: number | null,
+  duration?: string | null,
 }

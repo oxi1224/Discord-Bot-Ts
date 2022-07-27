@@ -57,10 +57,8 @@ export class BaseTaskHandler extends EventEmitter {
   /**
    * Sets the intervals of each task.
    */
-  public start() {
-    this.client.once('ready', async () => {
-      await this.loadAll();
-      this.taskArray.forEach(task => setInterval(() => task.execute(), task.interval ?? this.defaultInterval));
-    });
+  public async start() {
+    await this.loadAll();
+    this.taskArray.forEach(task => setInterval(() => task.execute(), task.interval ?? this.defaultInterval));
   }
 }

@@ -1,5 +1,5 @@
 import { BaseCommand } from "#base";
-import { client } from "../../bot.js";
+import { client } from "../../../bot.js";
 import { Client } from "./Client.js";
 import { CommandHandler } from "./CommandHandler.js";
 

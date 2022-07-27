@@ -44,5 +44,5 @@ export type ExpiringPunishmentInfo = {
   guildId: Snowflake,
   type: string,
   expires: number,
-  extraInfo: Snowflake
+  extraInfo?: Snowflake
 }

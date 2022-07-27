@@ -63,70 +63,68 @@ export class BaseCommandHandler extends EventEmitter {
    * Imports everything from exportFileDirectory, turns the commands into classes and pushes them to commandArray.
    */
   private async loadAll() {
-    const slashCommands: SlashCommandBuilder[] = [];
-    Object.entries(await import(this.exportFileDirectory) as { [key: string]: ClassConstructor<BaseCommand> })
+    const imports: { [key: string]: ClassConstructor<BaseCommand> } = await import(this.exportFileDirectory);
+    Object.entries(imports)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .forEach(([key, command]) => {
         const cmd = new command();
         if (this.commandArray.find(c => c.id === cmd.id)) throw new Error(`Command IDs must be unique. (${cmd.id})`);
         this.commandArray.push(cmd);
-        if (cmd.slash) this.loadSlash(cmd, slashCommands);
       });
+    await this.loadSlash();
   }
 
   /**
-   * Loads a slash command.
-   * @param command - The Command class.
-   * @param slashCommands - Array of previous slash commands.
+   * Loads all commands which have the slash option set to true.
    */
-  public async loadSlash(command: BaseCommand, slashCommands: SlashCommandBuilder[]) {
-    const name = command.id;
-    const args = command.argumentArray;
-    const description = command.description;
-    const slashCommand = new SlashCommandBuilder();
+  public async loadSlash() {
+    const slashCommands: SlashCommandBuilder[] = [];
+    this.commandArray.filter(cmd => cmd.slash);
+    this.commandArray.forEach(command => {
+      const name = command.id;
+      const args = command.argumentArray;
+      const description = command.description;
+      const slashCommand = new SlashCommandBuilder();
+  
+      if (name) slashCommand.setName(name);
+      if (description) slashCommand.setDescription(description);
+      if (args.length !== 0) 
+        args.forEach(arg => slashOptions[arg.slashType?.toString() as keyof typeof slashOptions](slashCommand, arg));
+      slashCommands.push(slashCommand);
+      this.emit('slashInit', slashCommand);
+    });
 
-    if (name) slashCommand.setName(name);
-    if (description) slashCommand.setDescription(description);
-    if (args.length !== 0) 
-      args.forEach(arg => slashOptions[arg.slashType?.toString() as keyof typeof slashOptions](slashCommand, arg));
-    
-    slashCommands.push(slashCommand);
-    try {
-      this.emit('slashLoadStart', slashCommand);
-      await rest.put(
-        Routes.applicationCommands(process.env.CLIENT_ID ?? ''),
-        { body: slashCommands },
-      );
-      this.emit('slashLoadFinish', slashCommand);
-    } catch (error) {
-      console.error(error);
-    }
+    if (!process.env.CLIENT_ID) this.client.destroy();
+    await rest.put(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      Routes.applicationCommands(process.env.CLIENT_ID!),
+      { body: slashCommands },
+    ).catch(e => console.error(e));
+    this.emit('slashLoad');
   }
 
   /**
    * Starts the command listeners.
    */
-  public start() {
-    this.client.once('ready', async () => {
-      await this.loadAll();
-      this.client.on('messageCreate', async (message: Message) => {
-        if (!message.content.startsWith(this.prefix) || message.author.bot) return;
-        const commandName = message.content.split(' ').shift()?.replace('!', '');
-        if (this.aliasReplacement) commandName?.replace(this.aliasReplacement, '');
-        const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName ?? ''));
-        if (!command) return;
-        const args: ParsedArgs | null = await command.parseArgs(message, command.argumentArray);
-        command.execute(message, args);
-      });
+  public async start() {
+    await this.loadAll();
+    this.client.on('messageCreate', async (message: Message) => {
+      if (!message.content.startsWith(this.prefix) || message.author.bot) return;
+      const commandName = message.content.split(' ').shift()?.replace('!', '');
+      if (this.aliasReplacement) commandName?.replace(this.aliasReplacement, '');
+      const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName ?? ''));
+      if (!command) return;
+      const args: ParsedArgs | null = await command.parseArgs(message, command.argumentArray);
+      command.execute(message, args);
+    });
 
-      this.client.on('interactionCreate', async (interaction: Interaction) => {
-        if (!(interaction.type === InteractionType.ApplicationCommand)) return;
-        const commandName = interaction.commandName;
-        const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName));
-        if (!command) return;
-        const args: ParsedArgs | null = await command.parseArgs(interaction, command.argumentArray);
-        command.execute(interaction, args);
-      });
+    this.client.on('interactionCreate', async (interaction: Interaction) => {
+      if (!(interaction.type === InteractionType.ApplicationCommand)) return;
+      const commandName = interaction.commandName;
+      const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName));
+      if (!command) return;
+      const args: ParsedArgs | null = await command.parseArgs(interaction, command.argumentArray);
+      command.execute(interaction, args);
     });
   }
 }

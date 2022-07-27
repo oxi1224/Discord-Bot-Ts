@@ -1,6 +1,6 @@
 import { Snowflake } from "discord.js";
-import { GuildConfig, GuildConfigModel } from "../models/GuildConfig";
-import { client } from "src/bot.js";
+import { GuildConfig, GuildConfigModel } from "../models/GuildConfig.js";
+import { client } from "../../bot.js";
 
 
 export async function getSetting<k extends keyof GuildConfigModel>(guildId: Snowflake, setting: k): Promise<GuildConfigModel[k]> {

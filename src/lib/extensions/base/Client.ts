@@ -27,7 +27,7 @@ export class Client extends CustomClient {
     });
 
     this.commandHandler = new CommandHandler(this, {
-      commandExportFile: '../../commands/index.js', 
+      commandExportFile: '../../commands/index.js',
       prefix: '!',
       aliasReplacement: /-/g
     });
@@ -51,8 +51,8 @@ export class Client extends CustomClient {
       listenerExportFile: '../../listeners/index.js'
     });
 
-    this.commandHandler.on('slashLoadStart', interaction => console.log(`Loading ${interaction.name} (/) command.`));
-    this.commandHandler.on('slashLoadFinish', interaction => console.log(`${interaction.name} (/) command loaded.`));
+    this.commandHandler.on('slashInit', interaction => console.log(`Initialized ${interaction.name} (/) command.`));
+    this.commandHandler.on('slashLoad', () => console.log('All (/) commands loaded.'));
     this.taskHandler.on('taskLoad', task => console.log(`${task.id} task loaded.`));
     this.listenerHandler.on('listenerLoad', listener => console.log(`${listener.id} listener loaded.`));
   }
@@ -66,7 +66,8 @@ export class Client extends CustomClient {
   }
 
   public async start() {
-    await this.login(process.env.TOKEN ?? '');
+    if (!process.env.TOKEN) this.destroy();
+    await this.login(process.env.TOKEN);
     this.commandHandler.start();
     this.taskHandler.start();
     this.listenerHandler.start();
