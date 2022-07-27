@@ -1,6 +1,6 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
-import { nanoid } from "nanoid";
 import { Snowflake } from "discord.js";
+import { Duration } from "#base";
 
 export class Modlogs extends Model {
   /**
@@ -24,23 +24,47 @@ export class Modlogs extends Model {
   declare moderatorId: Snowflake;
 
   /**
+   * Type of the punishment.
+   */
+  declare type: PunishmentType;
+
+  /**
    * Reason of the punishment. Defaults to 'None'
    */
   declare reason: string;
 
   /**
-   * Expiration timestamp of the punishment. Expires to 'False'
+   * Expiration timestamp of the punishment. Defaults to 'False'
    */
-  declare expires: number;
+  declare expires: number | string;
+
+  /**
+   * String value of the duration of the punishment. (e.g 2days)
+   */
+  declare duration: string;
 
   public static initialize(sequelize: Sequelize) {
     Modlogs.init({
       guildId: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
-      id: { type: DataTypes.STRING, allowNull: false, defaultValue: nanoid() },
+      id: { type: DataTypes.STRING, allowNull: false, defaultValue: '' },
       victimId: { type: DataTypes.STRING, allowNull: false },
       moderatorId: { type: DataTypes.STRING, allowNull: false },
+      type: { type: DataTypes.STRING, allowNull: false },
       reason: { type: DataTypes.TEXT, allowNull: true, defaultValue: 'None' },
       expires: { type: DataTypes.STRING, allowNull: true, defaultValue: 'False' },
+      duration: { type: DataTypes.STRING, allowNull: true, defaultValue: 'Permanent' }
     }, { sequelize });
   }
+}
+
+export type PunishmentType = 'ban' | 'unban' | 'block' | 'unblock' | 'mute' | 'unmute' | 'timeout' | 'untimeout' | 'warn'
+export type PunishmentInfo = {
+  guildId: Snowflake,
+  id: string,
+  victimId: Snowflake,
+  moderatorId: Snowflake,
+  type: PunishmentType,
+  reason?: string,
+  expires?: number | string,
+  duration?: Duration
 }

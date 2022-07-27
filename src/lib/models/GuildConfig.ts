@@ -49,3 +49,13 @@ export class GuildConfig extends Model {
     }, { sequelize });
   }
 }
+
+export type GuildConfigModel = {
+  id: Snowflake,
+  mutedRole: Snowflake,
+  prefix: string,
+  commandChannels: Snowflake[],
+  automodImmune: Snowflake[],
+  lockdownChannels: Snowflake[],
+  loggingChannels: { [key: string]: Snowflake },
+}

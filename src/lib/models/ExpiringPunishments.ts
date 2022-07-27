@@ -6,7 +6,7 @@ export class ExpiringPunishments extends Model {
   /**
    * Id of the victim.
    */
-  declare id: Snowflake;
+  declare victimId: Snowflake;
 
   /**
    * Id of the guild the punishment happened in.
@@ -30,11 +30,19 @@ export class ExpiringPunishments extends Model {
 
   public static initialize(sequelize: Sequelize) {
     ExpiringPunishments.init({
-      id: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
+      victimId: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
       guildId: { type: DataTypes.STRING, allowNull: false },
       type: { type: DataTypes.STRING, allowNull: false },
-      expires: { type: DataTypes.NUMBER, allowNull: false, defaultValue: 'False' },
+      expires: { type: DataTypes.NUMBER, allowNull: true },
       extraInfo: { type: DataTypes.STRING, allowNull: true }
     }, { sequelize });
   }
+}
+
+export type ExpiringPunishmentInfo = {
+  victimId: Snowflake,
+  guildId: Snowflake,
+  type: string,
+  expires: number,
+  extraInfo: Snowflake
 }

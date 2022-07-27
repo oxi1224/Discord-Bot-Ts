@@ -142,7 +142,7 @@ export abstract class BaseCommand {
       const arg = argumentArray[i];
 
       if (arg.type !== 'string' && arg.length !== Infinity) throw new Error('The length property may only appear with string type');
-      let value;
+      let value: ParsedArgs[keyof ParsedArgs];
       if (contentArray[arg.index]) {
         switch (arg.type as CommandArgumentType) {
         case 'user':
@@ -174,10 +174,12 @@ export abstract class BaseCommand {
         case 'duration':
           const stringOne = contentArray[arg.index];
           const stringTwo = contentArray.slice(arg.index, arg.index + 2).join('');
-          value = parseDuration(
-            (regex.duration.test(stringOne) ? stringOne : regex.duration.test(stringTwo) ? stringTwo : null) as Duration,
-            new Date().getTime()
-          );
+          const matchingDuration = regex.duration.test(stringOne) ? stringOne : regex.duration.test(stringTwo) ? stringTwo : null;
+          const timestamp = parseDuration(matchingDuration as Duration, new Date().getTime());
+          value = {
+            raw: matchingDuration,
+            timestamp: timestamp
+          };
           if (regex.duration.test(stringTwo)) contentArray.splice(arg.index, 1);
           break;
         case 'flag':

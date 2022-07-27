@@ -40,7 +40,11 @@ export type CommandArgument = {
 
 export type CommandArgumentType = 'duration' | 'string' | 'user' | 'channel' | 'role' | 'boolean' | 'integer' | 'number' | 'flag'
 export type Duration = `${number}${keyof typeof DurationString}`
-export type ParsedArgs = { [key: string]: string | boolean | number | User | NonThreadGuildBasedChannel | Role | Duration | null | undefined | CommandInteractionOption }
+export type ParsedDuration = {
+  raw: string | null,
+  timestamp: number | null;
+}
+export type ParsedArgs = { [key: string]: string | boolean | number | User | NonThreadGuildBasedChannel | Role | ParsedDuration | null | undefined | CommandInteractionOption }
 
 export type TaskHandlerOptions = {
   taskExportFile: string,

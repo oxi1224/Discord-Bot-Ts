@@ -2,15 +2,17 @@ import 'dotenv/config';
 import { GatewayIntentBits } from 'discord-api-types/v10';
 import { CustomClient, TimeInMs } from '#base';
 import { Sequelize } from 'sequelize';
-import { GuildConfig } from '../models/GuildConfig.js';
-import { ExpiringPunishments } from '../models/ExpiringPunishments.js';
-import { Modlogs } from '../models/Modlogs.js';
+import { GuildConfig, GuildConfigModel } from '../../models/GuildConfig.js';
+import { ExpiringPunishments } from '../../models/ExpiringPunishments.js';
+import { Modlogs } from '../../models/Modlogs.js';
 import { CommandHandler } from './CommandHandler.js';
 import { TaskHandler } from './TaskHandler.js';
 import { ListenerHandler } from './ListenerHandler.js';
+import { type Snowflake } from 'discord.js';
 
 export class Client extends CustomClient {
   public db: Sequelize;
+  public guildConfigCache: Map<Snowflake, GuildConfigModel> = new Map();
   public override commandHandler: CommandHandler;
   public override taskHandler: TaskHandler;
   public override listenerHandler: ListenerHandler;
@@ -69,5 +71,10 @@ export class Client extends CustomClient {
     this.taskHandler.start();
     this.listenerHandler.start();
     await this.dbInit();
+  }
+
+  public async cacheGuildConfig(guildId: Snowflake) {
+    const guildConfig = await GuildConfig.findByPk(guildId) ?? await GuildConfig.create({ id: guildId });
+    this.guildConfigCache.set(guildId, guildConfig);
   }
 }
