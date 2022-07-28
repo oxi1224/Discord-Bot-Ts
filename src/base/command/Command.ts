@@ -1,5 +1,5 @@
 import { PermissionFlagsBits } from "discord-api-types/v10";
-import { type Message, CommandInteraction } from "discord.js";
+import { type Message, CommandInteraction, PermissionResolvable } from "discord.js";
 import { Argument } from "./Argument.js";
 import { regex } from "../lib/constants.js";
 import type { CommandArgument, CommandArgumentType, CommandOptions, Duration, ParsedArgs } from "../lib/types.js";
@@ -25,8 +25,12 @@ export abstract class BaseCommand {
   /**
    * Required permissions to use the command.
    */
-  public userPermissions: bigint;
+  public userPermissions: PermissionResolvable;
 
+  /**
+   * Required permissions for the bot.
+   */
+  public clientPermissions: bigint[];
   /**
    * Description of the command.
    */
@@ -75,6 +79,7 @@ export abstract class BaseCommand {
     aliases,
     args = [],
     userPermissions = PermissionFlagsBits.SendMessages,
+    clientPermissions,
     description = '',
     usage,
     examples,
@@ -85,6 +90,7 @@ export abstract class BaseCommand {
     this.aliases = aliases;
     this.args = args;
     this.userPermissions = userPermissions;
+    this.clientPermissions = clientPermissions;
     this.description = description;
     this.slash = slash;
     this.usage = usage;

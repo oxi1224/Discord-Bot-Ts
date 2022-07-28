@@ -5,7 +5,7 @@ export const success = (text: string) => {
   return {
     embeds: [new EmbedBuilder()
       .setColor(colors.success)
-      .setTitle(`${emotes.success} ${text}`)]
+      .setDescription(`${emotes.success} ${text}`)]
   };
 };
 
@@ -13,7 +13,7 @@ export const error = (text: string) => {
   return {
     embeds: [new EmbedBuilder()
       .setColor(colors.error)
-      .setTitle(`${emotes.error} ${text}`)]
+      .setDescription(`${emotes.error} ${text}`)]
   };
 };
 
@@ -21,6 +21,6 @@ export const info = (text: string) => {
   return {
     embeds: [new EmbedBuilder()
       .setColor(colors.info)
-      .setTitle(`${emotes.info} ${text}`)]
+      .setDescription(`${emotes.info} ${text}`)]
   };
 };

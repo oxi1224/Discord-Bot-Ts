@@ -44,8 +44,8 @@ export class Modlogs extends Model {
 
   public static initialize(sequelize: Sequelize) {
     Modlogs.init({
-      guildId: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
-      id: { type: DataTypes.STRING, allowNull: false, defaultValue: '' },
+      id: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
+      guildId: { type: DataTypes.STRING, allowNull: false, unique: false },
       victimId: { type: DataTypes.STRING, allowNull: false },
       moderatorId: { type: DataTypes.STRING, allowNull: false },
       type: { type: DataTypes.STRING, allowNull: false },

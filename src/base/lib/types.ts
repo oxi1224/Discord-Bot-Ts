@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
-import { User, Role, NonThreadGuildBasedChannel, Snowflake, CommandInteractionOption } from "discord.js";
+import { User, Role, NonThreadGuildBasedChannel, Snowflake, CommandInteractionOption, PermissionResolvable } from "discord.js";
 import { DurationString } from "./constants.js";
 import { EventEmitter } from 'events';
 
@@ -21,7 +21,8 @@ export type CommandHandlerOptions = {
 export type CommandOptions = {
   aliases: string[],
   args: CommandArgument[],
-  userPermissions?: bigint,
+  userPermissions?: PermissionResolvable,
+  clientPermissions: bigint[],
   description: string,
   usage: string,
   examples: string[],

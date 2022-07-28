@@ -33,7 +33,7 @@ export class ExpiringPunishments extends Model {
       victimId: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
       guildId: { type: DataTypes.STRING, allowNull: false },
       type: { type: DataTypes.STRING, allowNull: false },
-      expires: { type: DataTypes.NUMBER, allowNull: true },
+      expires: { type: DataTypes.STRING, allowNull: true },
       extraInfo: { type: DataTypes.STRING, allowNull: true }
     }, { sequelize });
   }

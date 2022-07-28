@@ -62,7 +62,7 @@ export class Client extends CustomClient {
     GuildConfig.initialize(this.db);
     ExpiringPunishments.initialize(this.db);
     Modlogs.initialize(this.db);
-    await this.db.sync();
+    await this.db.sync({ alter: true });
   }
 
   public async start() {
@@ -70,7 +70,7 @@ export class Client extends CustomClient {
     await this.login(process.env.TOKEN);
     this.commandHandler.start();
     this.taskHandler.start();
-    this.listenerHandler.start();
+    // this.listenerHandler.start();
     await this.dbInit();
   }
 
