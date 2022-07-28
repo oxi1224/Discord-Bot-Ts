@@ -33,20 +33,28 @@ export async function createExpiringPunishmentsEntry(guild: Guild, options: Omit
   return await entry.save();
 }
 
-export async function logPunishment(guild: Guild, options: ModlogUtilOptions) {
+export async function sendModlog(guild: Guild, options: Omit<PunishmentInfo, 'guildId'>) {
   const moderator = await guild.members.fetch(options.moderatorId);
   const embed = new EmbedBuilder()
     .setTimestamp()
+    .setColor(colors.base)
     .setAuthor({ name: `${moderator.user.username}#${moderator.user.discriminator}` })
     .setThumbnail(moderator.displayAvatarURL())
-    .setTitle(`Punishment: ${options.type}`)
-    .setFields([
-      { name: 'Moderator', value: `${moderator}`, inline: true },
-      { name: 'Victim', value: `<${options.victimId}>`, inline: true },
-      { name: 'Reason', value: options.reason ?? 'None', inline: true },
-      { name: 'Duration', value: options.duration ?? 'Permanent', inline: true },
-      { name: 'Expires', value: options.expires ? `<t:${Math.floor(parseInt(options.expires.toString()) / 1000)}>` : 'False', inline: true },
-    ]);
+    .setTitle(`Action: ${options.type}`);
+  const fields: EmbedField[] = [
+    { name: 'Moderator', value: `${moderator}`, inline: true },
+    { name: 'Victim', value: `<@${options.victimId}>`, inline: true },
+    { name: 'Case ID', value: options.id, inline: true },
+    { name: 'Reason', value: options.reason ?? 'None', inline: true },
+  ];
+  if (options.duration) fields.push({ name: 'Duration', value: options.duration ?? 'Permanent', inline: true });
+  if (options.expires) fields.push({ name: 'Expires', value: options.expires ? `<t:${Math.floor(parseInt(options.expires.toString()) / 1000)}>` : 'False', inline: true });
+  if (fields.length !== 6) {
+    fields.splice(2, 0, { name: '\u200B', value: '\u200B', inline: true });
+    fields.splice(5, 0, { name: '\u200B', value: '\u200B', inline: true });
+  }
+  embed.setFields(fields);
+
   const channelId = (await getSetting(guild.id, 'loggingChannels')).modlogs;
   if (!channelId) return;
   return (await guild.channels.fetch(channelId) as TextChannel).send({ embeds: [embed] });
@@ -67,7 +75,7 @@ export async function logError(err: Error) {
   const embed = new EmbedBuilder()
     .setTimestamp()
     .setColor(colors.error);
-    
+
   const fields: EmbedField[] = [{ name: 'Error:', value: `\`\`\`${err}\`\`\``, inline: false }];
   const stack = err.stack ?? '';
   if (stack.length > 1000) {

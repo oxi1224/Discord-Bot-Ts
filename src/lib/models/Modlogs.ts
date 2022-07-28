@@ -64,6 +64,6 @@ export type PunishmentInfo = {
   moderatorId: Snowflake,
   type: PunishmentType,
   reason?: string,
-  expires?: number | null,
+  expires?: number | string | null,
   duration?: string | null,
 }

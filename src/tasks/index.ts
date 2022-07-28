@@ -1,1 +1,1 @@
-export { default as TestTask } from './test.js';
+export { default as RemoveExpiringPunishments } from './expiringPunishments.js';

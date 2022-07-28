@@ -25,7 +25,7 @@ export default class WarnCommand extends Command {
       description: 'Warns a member',
       usage: 'warn <member> <reason>',
       examples: ['warn @oxi#6219 spamming'],
-      category: 'Moderation'
+      category: 'Moderation',
     });
   }
 

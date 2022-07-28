@@ -30,7 +30,7 @@ export class ExpiringPunishments extends Model {
 
   public static initialize(sequelize: Sequelize) {
     ExpiringPunishments.init({
-      victimId: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
+      victimId: { type: DataTypes.STRING, allowNull: false, primaryKey: true, unique: false },
       guildId: { type: DataTypes.STRING, allowNull: false },
       type: { type: DataTypes.STRING, allowNull: false },
       expires: { type: DataTypes.STRING, allowNull: true },

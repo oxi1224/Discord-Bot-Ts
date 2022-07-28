@@ -1,7 +1,7 @@
 import { ParsedDuration } from '#base';
 import { Message, User, GuildMember, EmbedBuilder } from 'discord.js';
 import { ApplicationCommandOptionType, PermissionFlagsBits } from "discord-api-types/v10";
-import { Command, embeds, permissionCheck, SlashCommand, createModlogsEntry, logPunishment, ModlogUtilOptions, createExpiringPunishmentsEntry, logError, arrayPermissionCheck } from '#lib';
+import { Command, embeds, permissionCheck, SlashCommand, createModlogsEntry, sendModlog, ModlogUtilOptions, createExpiringPunishmentsEntry, logError, arrayPermissionCheck, colors } from '#lib';
 
 export default class BanCommand extends Command {
   constructor() {
@@ -43,7 +43,7 @@ export default class BanCommand extends Command {
     reason: string,
   }) {
     if (!message.guild?.available) return;
-    
+
     const botPermsCheck = arrayPermissionCheck(await message.guild.members.fetchMe(), this.clientPermissions);
     if (botPermsCheck !== true) return message.reply(embeds.error(`I am missing the ${botPermsCheck.join(', ')}permissions`)); 
     if (!args.user) return message.reply(embeds.error('Invalid user'));
@@ -58,6 +58,7 @@ export default class BanCommand extends Command {
     
     const embed = new EmbedBuilder()
       .setTimestamp()
+      .setColor(colors.base)
       .setTitle(`You've been banned ${!args.duration ? '' : 'permanently'} in ${message.guild} ${!args.duration ? `for ${args.duration}` : ''}`)
       .setDescription(`Reason: \`\`\`${args.reason ?? 'None'}\`\``);
     const options: ModlogUtilOptions = {
@@ -65,8 +66,8 @@ export default class BanCommand extends Command {
       victimId: args.user.id,
       type: 'ban',
       reason: args.reason,
-      expires: args.duration.timestamp,
-      duration: args.duration.raw
+      expires: args.duration.timestamp ?? 'False',
+      duration: args.duration.raw ?? 'Permanent'
     };
     let modlogEntry;
     let expiringPunishmentsEntry;
@@ -77,7 +78,6 @@ export default class BanCommand extends Command {
       await logError(e as Error);
       return message.reply(embeds.error('An error occured while creating the modlog entry. Please contact oxi#6219'));
     }
-    await logPunishment(message.guild, options);
 
     if (args.duration.timestamp) {
       try {
@@ -100,6 +100,7 @@ export default class BanCommand extends Command {
       } catch {
         await message.reply(embeds.info(`Failed to DM ${args.user}, action still performed.`));
       }
+      await sendModlog(message.guild, Object.assign(options, { id: modlogEntry.id }));
     } catch (e) {
       await modlogEntry?.destroy();
       await expiringPunishmentsEntry?.destroy();

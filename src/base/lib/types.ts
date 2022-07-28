@@ -22,7 +22,7 @@ export type CommandOptions = {
   aliases: string[],
   args: CommandArgument[],
   userPermissions?: PermissionResolvable,
-  clientPermissions: bigint[],
+  clientPermissions?: bigint[],
   description: string,
   usage: string,
   examples: string[],

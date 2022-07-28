@@ -70,7 +70,7 @@ export class Client extends CustomClient {
     await this.login(process.env.TOKEN);
     this.commandHandler.start();
     this.taskHandler.start();
-    // this.listenerHandler.start();
+    this.listenerHandler.start();
     await this.dbInit();
   }
 

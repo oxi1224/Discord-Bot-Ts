@@ -79,7 +79,7 @@ export abstract class BaseCommand {
     aliases,
     args = [],
     userPermissions = PermissionFlagsBits.SendMessages,
-    clientPermissions,
+    clientPermissions = [PermissionFlagsBits.SendMessages],
     description = '',
     usage,
     examples,
