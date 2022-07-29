@@ -69,9 +69,8 @@ export default class BanCommand extends Command {
       expires: args.duration.timestamp ?? 'False',
       duration: args.duration.raw ?? 'Permanent'
     };
-    let modlogEntry;
-    let expiringPunishmentsEntry;
-    
+    let modlogEntry, expiringPunishmentsEntry;
+
     try {
       modlogEntry = await createModlogsEntry(message.guild, options);
     } catch (e) {
@@ -92,21 +91,18 @@ export default class BanCommand extends Command {
       }
     }
 
+    const dmMessage = await args.user.send({ embeds: [embed] }).catch(() => null);
+
     try {
       await message.guild.members.ban(args.user.id, { reason: args.reason });
-      try {
-        await args.user.send({ embeds: [embed] });
-        await message.reply(embeds.success(`${args.user} has been successfully banned.`));
-      } catch {
-        await message.reply(embeds.info(`Failed to DM ${args.user}, action still performed.`));
-      }
       await sendModlog(message.guild, Object.assign(options, { id: modlogEntry.id }));
+      if (!dmMessage) return await message.reply(embeds.info(`Failed to DM ${args.user}, action still performed`));
+      return await message.reply(embeds.success(`${args.user} has been successfully banned`));    
     } catch (e) {
       await modlogEntry?.destroy();
       await expiringPunishmentsEntry?.destroy();
       await logError(e as Error);
       return message.reply(embeds.error('An error has occured while banning the user.'));
     }
-    return;
   }
 }

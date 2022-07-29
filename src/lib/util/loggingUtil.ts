@@ -44,15 +44,12 @@ export async function sendModlog(guild: Guild, options: Omit<PunishmentInfo, 'gu
   const fields: EmbedField[] = [
     { name: 'Moderator', value: `${moderator}`, inline: true },
     { name: 'Victim', value: `<@${options.victimId}>`, inline: true },
-    { name: 'Case ID', value: options.id, inline: true },
     { name: 'Reason', value: options.reason ?? 'None', inline: true },
+    { name: 'Case ID', value: options.id, inline: true },
   ];
   if (options.duration) fields.push({ name: 'Duration', value: options.duration ?? 'Permanent', inline: true });
   if (options.expires) fields.push({ name: 'Expires', value: options.expires ? `<t:${Math.floor(parseInt(options.expires.toString()) / 1000)}>` : 'False', inline: true });
-  if (fields.length !== 6) {
-    fields.splice(2, 0, { name: '\u200B', value: '\u200B', inline: true });
-    fields.splice(5, 0, { name: '\u200B', value: '\u200B', inline: true });
-  }
+
   embed.setFields(fields);
 
   const channelId = (await getSetting(guild.id, 'loggingChannels')).modlogs;
