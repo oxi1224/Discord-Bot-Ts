@@ -48,7 +48,7 @@ export async function sendModlog(guild: Guild, options: Omit<PunishmentInfo, 'gu
     { name: 'Case ID', value: options.id, inline: true },
   ];
   if (options.duration) fields.push({ name: 'Duration', value: options.duration ?? 'Permanent', inline: true });
-  if (options.expires) fields.push({ name: 'Expires', value: options.expires ? `<t:${Math.floor(parseInt(options.expires.toString()) / 1000)}>` : 'False', inline: true });
+  if (options.expires) fields.push({ name: 'Expires', value: typeof options.expires === 'number' ? `<t:${Math.floor(parseInt(options.expires.toString()) / 1000)}>` : 'False', inline: true });
 
   embed.setFields(fields);
 

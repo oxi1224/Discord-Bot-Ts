@@ -1,12 +1,13 @@
 import 'dotenv/config';
 import { EventEmitter } from 'events';
-import { Interaction, Message, SlashCommandBuilder, InteractionType } from 'discord.js';
+import { Interaction, Message, SlashCommandBuilder, InteractionType, GuildMember } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
 import { BaseCommand } from '../command/Command.js';
 import { slashOptions } from '../lib/constants.js';
 import type { CommandHandlerOptions, ClassConstructor, ParsedArgs } from '../lib/types.js';
 import { CustomClient } from '../CustomClient.js';
+import { embeds, arrayPermissionCheck, emotes } from '#lib';
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN ?? '');
 
@@ -108,23 +109,40 @@ export class BaseCommandHandler extends EventEmitter {
    */
   public async start() {
     await this.loadAll();
-    this.client.on('messageCreate', async (message: Message) => {
-      if (!message.content.startsWith(this.prefix) || message.author.bot) return;
-      const commandName = message.content.split(' ').shift()?.replace('!', '');
-      if (this.aliasReplacement) commandName?.replace(this.aliasReplacement, '');
-      const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName ?? ''));
-      if (!command) return;
-      const args: ParsedArgs | null = await command.parseArgs(message, command.argumentArray);
-      command.execute(message, args);
-    });
+    this.client.on('messageCreate', (message: Message) => { this.handle(message); });
+    this.client.on('interactionCreate', async (interaction: Interaction) => { this.handleSlash(interaction); });
+  }
 
-    this.client.on('interactionCreate', async (interaction: Interaction) => {
-      if (!(interaction.type === InteractionType.ApplicationCommand)) return;
-      const commandName = interaction.commandName;
-      const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName));
-      if (!command) return;
-      const args: ParsedArgs | null = await command.parseArgs(interaction, command.argumentArray);
-      command.execute(interaction, args);
-    });
+  private async handle(message: Message) {
+    if (!message.content.startsWith(this.prefix) || message.author.bot) return;
+    if (!message.guild?.available) return;
+    
+    const commandName = message.content.split(' ').shift()?.replace('!', '');
+    if (this.aliasReplacement) commandName?.replace(this.aliasReplacement, '');
+    const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName ?? ''));
+    if (!command) return;
+
+    const botPermsCheck = arrayPermissionCheck(await message.guild.members.fetchMe(), command.clientPermissions);
+    if (botPermsCheck !== true) return message.reply(embeds.error(`I am missing the ${botPermsCheck.join(', ')}permissions`)); 
+    if (!message.member?.permissions.has(command.userPermissions)) return message.react(emotes.error);
+
+    const args: ParsedArgs | null = await command.parseArgs(message, command.argumentArray);
+    return command.execute(message, args);
+  } 
+
+  private async handleSlash(interaction: Interaction) {
+    if (!(interaction.type === InteractionType.ApplicationCommand)) return;
+    if (!interaction.guild?.available) return;
+
+    const commandName = interaction.commandName;
+    const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName));
+    if (!command) return;
+
+    const botPermsCheck = arrayPermissionCheck(await interaction.guild.members.fetchMe(), command.clientPermissions);
+    if (botPermsCheck !== true) return interaction.reply(embeds.error(`I am missing the ${botPermsCheck.join(', ')}permissions`)); 
+    if (!((interaction.member as GuildMember).permissions.has(command.userPermissions))) return interaction.reply({ content: 'Insufficient Permissions', ephemeral: true });
+
+    const args: ParsedArgs | null = await command.parseArgs(interaction, command.argumentArray);
+    return command.execute(interaction, args);
   }
 }

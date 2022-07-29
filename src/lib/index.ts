@@ -5,7 +5,6 @@ export * from './extensions/base/Task.js';
 export * from './extensions/base/TaskHandler.js';
 export * from './extensions/base/Listener.js';
 export * from './extensions/base/ListenerHandler.js';
-export * from './extensions/discord.js/SlashCommand.js';
 export * from './common/constants.js';
 export * as embeds from './common/embeds.js';
 export * from './models/ExpiringPunishments.js';
