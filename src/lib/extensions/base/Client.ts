@@ -65,13 +65,13 @@ export class Client extends CustomClient {
     await this.db.sync({ alter: true });
   }
 
-  public async start() {
+  public start() {
     if (!process.env.TOKEN) this.destroy();
-    await this.login(process.env.TOKEN);
     this.commandHandler.start();
     this.taskHandler.start();
     this.listenerHandler.start();
-    await this.dbInit();
+    this.dbInit();
+    this.login(process.env.TOKEN);
   }
 
   public async cacheGuildConfig(guildId: Snowflake) {

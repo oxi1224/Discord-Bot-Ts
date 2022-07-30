@@ -24,16 +24,23 @@ export abstract class BaseListener {
   public listenerHandler?: BaseListenerHandler;
 
   /**
+   * The method to use when listening for the event. Defaults to "on".
+   */
+  public method: string;
+
+  /**
    * @param id - The unique id of the listener.
    * @param options - Options.
    */
   constructor(id: string, {
     emitter,
     event,
+    method = 'on'
   }: ListenerOptions) {
     this.id = id;
-    this.emitter = emitter,
+    this.emitter = emitter;
     this.event = event;
+    this.method = method;
   }
 
   /**

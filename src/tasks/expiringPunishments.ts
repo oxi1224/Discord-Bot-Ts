@@ -5,7 +5,7 @@ import { EmbedBuilder } from "discord.js";
 
 export default class RemoveExpiringPunishments extends Task {
   constructor() {
-    super('ExpiringPunishments', {
+    super('expiringPunishments', {
       interval: TimeInMs.Second * 30
     });
   }

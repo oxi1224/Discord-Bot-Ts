@@ -3,7 +3,7 @@ import { Modlogs, type PunishmentInfo } from "../models/Modlogs.js";
 import { nanoid } from "nanoid";
 import { ExpiringPunishments, type ExpiringPunishmentInfo } from "../models/ExpiringPunishments.js";
 import { getSetting } from "./guildUtil.js";
-import { colors } from "../common/constants.js";
+import { colors, otherIDs } from "../common/constants.js";
 import { client } from "../../bot.js";
 
 export type ModlogUtilOptions = Omit<PunishmentInfo, 'guildId' | 'id'>
@@ -57,13 +57,14 @@ export async function sendModlog(guild: Guild, options: Omit<PunishmentInfo, 'gu
   return (await guild.channels.fetch(channelId) as TextChannel).send({ embeds: [embed] });
 }
 
-export async function logAction(guild: Guild, title: string, fields: EmbedField[]) {
+export async function logAction(guild: Guild, action: string, fields: EmbedField[]) {
   const embed = new EmbedBuilder()
     .setTimestamp()
-    .setTitle(title)
+    .setColor(colors.base)
+    .setTitle(`Action: ${action}`)
     .setFields(fields);
 
-  const channelId = (await getSetting(guild.id, 'loggingChannels')).actionLogs ?? (await getSetting(guild.id, 'loggingChannels')).modlogs;
+  const channelId = (await getSetting(guild.id, 'loggingChannels')).actionLogs;
   if (!channelId) return;
   return (await guild.channels.fetch(channelId) as TextChannel).send({ embeds: [embed] });
 }
@@ -86,5 +87,5 @@ export async function logError(err: Error) {
     fields.push({ name: 'Call Stack', value: `\`\`\`js\n${err.stack} \`\`\``, inline: false });
   }
   embed.addFields(fields);
-  (await (await client.guilds.fetch('613024666079985702')).channels.fetch('980478015412772884') as TextChannel)?.send({ embeds: [embed] });
+  (await (await client.guilds.fetch(otherIDs.parentGuild)).channels.fetch(otherIDs.mainError) as TextChannel)?.send({ embeds: [embed] });
 }

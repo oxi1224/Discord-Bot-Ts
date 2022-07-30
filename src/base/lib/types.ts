@@ -63,4 +63,5 @@ export type ListenerHandlerOptions = {
 export type ListenerOptions = {
   emitter: EventEmitter,
   event: string,
+  method?: 'on' | 'once',
 }

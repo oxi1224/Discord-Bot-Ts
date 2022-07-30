@@ -51,7 +51,8 @@ export class BaseListenerHandler extends EventEmitter {
   public async start() {
     await this.loadAll();
     this.listenerArray.forEach(listener => {
-      listener.emitter.on(listener.event, (val) => listener.execute(val));
+      if (listener.method === 'once') listener.emitter.once(listener.event, (val: unknown) => listener.execute(val));
+      else listener.emitter.on(listener.event, (val: unknown) => listener.execute(val));
       this.emit('listenerLoad', listener);
     });
   }
