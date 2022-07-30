@@ -7,7 +7,6 @@ import { BaseCommand } from '../command/Command.js';
 import { slashOptions } from '../lib/constants.js';
 import type { CommandHandlerOptions, ClassConstructor, ParsedArgs } from '../lib/types.js';
 import { CustomClient } from '../CustomClient.js';
-import { embeds, arrayPermissionCheck, emotes } from '#lib';
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN ?? '');
 
@@ -25,7 +24,7 @@ export class BaseCommandHandler extends EventEmitter {
   /**
    * The prefix for commands.
    */
-  private prefix: string;
+  public prefix: string;
 
   /**
    * The client of the handler.
@@ -113,24 +112,21 @@ export class BaseCommandHandler extends EventEmitter {
     this.client.on('interactionCreate', async (interaction: Interaction) => { this.handleSlash(interaction); });
   }
 
-  private async handle(message: Message) {
-    if (!message.content.startsWith(this.prefix) || message.author.bot) return;
+  public async handle(message: Message): Promise<unknown> {
     if (!message.guild?.available) return;
-    
+    if (!message.content.startsWith(this.prefix) || message.author.bot) return;
+
     const commandName = message.content.split(' ').shift()?.replace('!', '');
     if (this.aliasReplacement) commandName?.replace(this.aliasReplacement, '');
     const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName ?? ''));
     if (!command) return;
 
-    const botPermsCheck = arrayPermissionCheck(await message.guild.members.fetchMe(), command.clientPermissions);
-    if (botPermsCheck !== true) return message.reply(embeds.error(`I am missing the ${botPermsCheck.join(', ')}permissions`)); 
-    if (!message.member?.permissions.has(command.userPermissions)) return message.react(emotes.error);
-
+    if (!message.member?.permissions.has(command.userPermissions)) return;
     const args: ParsedArgs | null = await command.parseArgs(message, command.argumentArray);
     return command.execute(message, args);
   } 
 
-  private async handleSlash(interaction: Interaction) {
+  public async handleSlash(interaction: Interaction): Promise<unknown> {
     if (!(interaction.type === InteractionType.ApplicationCommand)) return;
     if (!interaction.guild?.available) return;
 
@@ -138,10 +134,7 @@ export class BaseCommandHandler extends EventEmitter {
     const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName));
     if (!command) return;
 
-    const botPermsCheck = arrayPermissionCheck(await interaction.guild.members.fetchMe(), command.clientPermissions);
-    if (botPermsCheck !== true) return interaction.reply(embeds.error(`I am missing the ${botPermsCheck.join(', ')}permissions`)); 
     if (!((interaction.member as GuildMember).permissions.has(command.userPermissions))) return interaction.reply({ content: 'Insufficient Permissions', ephemeral: true });
-
     const args: ParsedArgs | null = await command.parseArgs(interaction, command.argumentArray);
     return command.execute(interaction, args);
   }

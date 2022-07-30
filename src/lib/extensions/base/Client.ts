@@ -29,7 +29,7 @@ export class Client extends CustomClient {
     this.commandHandler = new CommandHandler(this, {
       commandExportFile: '../../commands/index.js',
       prefix: '!',
-      aliasReplacement: /-/g
+      aliasReplacement: /-/g,
     });
 
     this.taskHandler = new TaskHandler(this, {
