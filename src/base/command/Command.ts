@@ -72,6 +72,11 @@ export abstract class BaseCommand {
   public commandHandler?: BaseCommandHandler;
 
   /**
+   * Extra info to display about the command when running help.
+   */
+  public extraInfo?: string;
+
+  /**
    * @param id - Unique id of the command
    * @param options - Options 
    */
@@ -85,6 +90,7 @@ export abstract class BaseCommand {
     examples,
     category,
     slash = true,
+    extraInfo,
   }: CommandOptions) {
     this.id = id;
     this.aliases = aliases;
@@ -98,6 +104,7 @@ export abstract class BaseCommand {
     this.category = category;
     this.argumentArray = this.initArgs(args);
     this.flagCount = (this.argumentArray.filter(arg => arg.type === 'flag')).length;
+    this.extraInfo = extraInfo;
   }
 
   /**

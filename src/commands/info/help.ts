@@ -59,6 +59,7 @@ export default class HelpCommand extends Command {
         });
         fields.push({ name: 'Arguments', value: commandArgs.join('\n'), inline: false });
       }
+      if (matchingCommand.extraInfo) fields.push({ name: 'Extra Information', value: matchingCommand.extraInfo, inline: false }); 
     }
     embed.addFields(fields);
     embed.setColor(colors.base);

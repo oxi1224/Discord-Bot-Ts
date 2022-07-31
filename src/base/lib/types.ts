@@ -28,6 +28,7 @@ export type CommandOptions = {
   examples: string[],
   category: string,
   slash?: boolean,
+  extraInfo?: string,
 }
 
 export type CommandArgument = {
@@ -37,6 +38,12 @@ export type CommandArgument = {
   slashType?: ApplicationCommandOptionType,
   description?: string,
   length?: number,
+  options?: InteractionChoice[]
+}
+
+export type InteractionChoice = {
+  name: string
+  value: string | number
 }
 
 export type CommandArgumentType = 'duration' | 'string' | 'user' | 'channel' | 'role' | 'boolean' | 'integer' | 'number' | 'flag'

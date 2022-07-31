@@ -3,7 +3,7 @@ import { emotes } from "../../common/constants.js";
 import { CacheType, Interaction, Message, InteractionType, GuildMember } from "discord.js";
 import { arrayPermissionCheck } from "../../util/moderationUtil.js";
 import { embeds } from '#lib';
-import { getSetting } from "../../util/guildUtil";
+import { getSetting } from "../../util/guildUtil.js";
 
 export class CommandHandler extends BaseCommandHandler {
 
@@ -11,8 +11,8 @@ export class CommandHandler extends BaseCommandHandler {
     if (!message.guild?.available) return;
     const prefix = await getSetting(message.guild.id, 'prefix') ?? super.prefix;
     if (!message.content.startsWith(prefix) || message.author.bot) return;
-    
-    const commandName = message.content.split(' ').shift()?.replace('!', '');
+
+    const commandName = message.content.split(' ').shift()?.replace(prefix, '');
     if (this.aliasReplacement) commandName?.replace(this.aliasReplacement, '');
     const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName ?? ''));
     if (!command) return;

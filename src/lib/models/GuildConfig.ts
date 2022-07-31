@@ -41,7 +41,7 @@ export class GuildConfig extends Model {
     GuildConfig.init({
       id: { type: DataTypes.STRING, primaryKey: true },
       mutedRole: { type: DataTypes.STRING, allowNull: true },
-      prefix: { type: DataTypes.STRING, defaultValue: '!' },
+      prefix: { type: DataTypes.STRING, allowNull: true },
       commandChannels: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: true, defaultValue: [] },
       automodImmune: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: true, defaultValue: [] },
       lockdownChannels: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: false, defaultValue: [] },
@@ -59,3 +59,5 @@ export type GuildConfigModel = {
   lockdownChannels: Snowflake[],
   loggingChannels: { [key: string]: Snowflake },
 }
+
+export const validConfigKeys: string[] = ['mutedrole', 'prefix', 'modlogschannel', 'actionschannel', 'commandChannels', 'automodImmune', 'lockdownChannels'];

@@ -38,25 +38,38 @@ export const regex = {
 };
 
 export const slashOptions = {
-  '3': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addStringOption(option => option.setName(arg.id)
-    .setDescription(arg.description ?? '')
-    .setRequired(arg.required)),
-  '4': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addIntegerOption(option => option.setName(arg.id)
-    .setDescription(arg.description ?? '')
-    .setRequired(arg.required)),
+  '3': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addStringOption((option) => {
+    option.setName(arg.id)
+      .setDescription(arg.description ?? '')
+      .setRequired(arg.required);
+    if (arg.options) option.addChoices(...(arg.options as { name: string, value: string }[]));
+    return option;
+  }),
+  '4': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addIntegerOption(option => {
+    option.setName(arg.id)
+      .setDescription(arg.description ?? '')
+      .setRequired(arg.required);
+    if (arg.options) option.addChoices(...(arg.options as { name: string, value: number }[]));
+    return option;
+  }),
   '5': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addBooleanOption(option => option.setName(arg.id)
     .setDescription(arg.description ?? '')
-    .setRequired(arg.required)),
+    .setRequired(arg.required)
+  ),
   '6': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addUserOption(option => option.setName(arg.id)
     .setDescription(arg.description ?? '')
-    .setRequired(arg.required)),
+    .setRequired(arg.required)
+  ),
   '7': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addChannelOption(option => option.setName(arg.id)
     .setDescription(arg.description ?? '')
-    .setRequired(arg.required)),
+    .setRequired(arg.required)
+  ),
   '8': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addRoleOption(option => option.setName(arg.id)
     .setDescription(arg.description ?? '')
-    .setRequired(arg.required)),
+    .setRequired(arg.required)
+  ),
   '10': (slashCommand: SlashCommandBuilder, arg: Argument) => slashCommand.addNumberOption(option => option.setName(arg.id)
     .setDescription(arg.description ?? '')
-    .setRequired(arg.required)),
+    .setRequired(arg.required)
+  ),
 };

@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
 import { BaseCommand } from "./Command.js";
-import type { CommandArgument, CommandArgumentType } from "../lib/types.js";
+import type { CommandArgument, CommandArgumentType, InteractionChoice } from "../lib/types.js";
 
 /**
  * Represents a command argument
@@ -48,6 +48,11 @@ export class Argument {
   public length: number;
 
   /**
+   * Choices to add to a slash command option.
+   */
+  public options?: InteractionChoice[];
+
+  /**
    * @param command - The command this argument belongs to.
    * @param options - Options.
    */
@@ -58,6 +63,7 @@ export class Argument {
     slashType,
     description = '',
     length = Infinity,
+    options,
   }: CommandArgument) {
     this.command = command;
     this.id = id;
@@ -67,7 +73,7 @@ export class Argument {
     this.description = description;
     this.index = command.args.findIndex(arg => arg.id === this.id);
     this.length = length;
-
+    this.options = options;
   }
 
   set indexSetter(value: number) {

@@ -89,7 +89,9 @@ export class BaseCommandHandler extends EventEmitter {
       if (name) slashCommand.setName(name);
       if (description) slashCommand.setDescription(description);
       if (args.length !== 0) 
-        args.forEach(arg => slashOptions[arg.slashType?.toString() as keyof typeof slashOptions](slashCommand, arg));
+        args.forEach(arg => {
+          slashOptions[arg.slashType?.toString() as keyof typeof slashOptions](slashCommand, arg);
+        });
       slashCommands.push(slashCommand);
       this.emit('slashInit', slashCommand);
     });
