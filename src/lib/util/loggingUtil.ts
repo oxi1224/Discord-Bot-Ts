@@ -52,7 +52,7 @@ export async function sendModlog(guild: Guild, options: Omit<PunishmentInfo, 'gu
 
   embed.setFields(fields);
 
-  const channelId = (await getSetting(guild.id, 'loggingChannels')).modlogs;
+  const channelId = (await getSetting(guild.id, 'loggingChannels')).modlogsChannel;
   if (!channelId) return;
   return (await guild.channels.fetch(channelId) as TextChannel).send({ embeds: [embed] });
 }
@@ -64,7 +64,7 @@ export async function logAction(guild: Guild, action: string, fields: EmbedField
     .setTitle(`Action: ${action}`)
     .setFields(fields);
 
-  const channelId = (await getSetting(guild.id, 'loggingChannels')).actionLogs;
+  const channelId = (await getSetting(guild.id, 'loggingChannels')).actionsChannel;
   if (!channelId) return;
   return (await guild.channels.fetch(channelId) as TextChannel).send({ embeds: [embed] });
 }

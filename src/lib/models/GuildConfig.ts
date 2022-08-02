@@ -59,10 +59,13 @@ export interface GuildConfigModel {
   lockdownChannels: Snowflake[],
   loggingChannels: { [key: string]: Snowflake },
 }
-export const validConfigKeys: string[] = ['mutedDole', 'prefix', 'modlogsChannel', 'actionsChannel', 'commandChannels', 'automodImmune', 'lockdownChannels'];
+export const validConfigKeys: string[] = ['mutedRole', 'prefix', 'modlogsChannel', 'actionsChannel', 'commandChannels', 'automodImmune', 'lockdownChannels'];
 export const guildConfigKeysMap: Map<string, string> = (() => {
   const map: Map<string, string> = new Map();
-  validConfigKeys.forEach(key => map.set(key.toLowerCase(), key));
+  validConfigKeys.forEach(key => {
+    map.set(key.toLowerCase(), key);
+    map.set(key, key);
+  });
   return map;
 })();
 export type GuildConfigModelKey = typeof validConfigKeys[number]

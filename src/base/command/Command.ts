@@ -148,6 +148,7 @@ export abstract class BaseCommand {
   public async parseArgs(message: Message | CommandInteraction, argumentArray: Argument[]): Promise<ParsedArgs | null> {
     if (message instanceof CommandInteraction) return this.parseSlash(message, argumentArray);
     const contentArray: string[] = message.content.split(' ');
+    contentArray.filter(str => str !== ' ');
     contentArray.shift();
     if (!contentArray) return null;
     const args: ParsedArgs = {};
@@ -189,10 +190,11 @@ export abstract class BaseCommand {
           const stringTwo = contentArray.slice(arg.index, arg.index + 2).join('');
           const matchingDuration = regex.duration.test(stringOne) ? stringOne : regex.duration.test(stringTwo) ? stringTwo : null;
           const timestamp = parseDuration(matchingDuration as Duration, new Date().getTime());
-          value = {
+          const val = {
             raw: matchingDuration,
             timestamp: timestamp
           };
+          value = !val.raw || !val.timestamp ? null : val;
           if (regex.duration.test(stringTwo)) contentArray.splice(arg.index, 1);
           break;
         case 'flag':
@@ -206,11 +208,10 @@ export abstract class BaseCommand {
       } else { value = null; }
       
       args[arg.id] = value;
-
-      let test = i;
-      test++;
-      if (value === null && !arg.required && argumentArray[test]) argumentArray[test].index = i;
-      else argumentArray[i].index = i;
+      let newIndex = i;
+      newIndex++;
+      if (!value && !arg.required && argumentArray[newIndex] !== undefined) argumentArray[newIndex].index = i;
+      argumentArray[i].index = i;
     }
     return args;
   }

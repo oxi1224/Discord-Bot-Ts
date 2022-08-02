@@ -18,11 +18,11 @@ export class GuildMemberAdd extends Listener {
         victimId: member.id,
         type: 'mute',
         [Op.or]: [
-          { expires: { [Op.gt]: (new Date().getTime()) } },
+          { expires: { [Op.gt]: (new Date().getTime()).toString() } },
           { expires: 'False' }
         ]
       }
-    });
+    }).catch(() => null);
 
     if (activeMute) member.roles.add(mutedRole);
     // Special functionality for main server, ignore.

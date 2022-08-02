@@ -19,7 +19,6 @@ export default class RemoveExpiringPunishments extends Task {
         } 
       }
     }).catch(() => null);
-
     if (!punishmentsToRemove) return;
     punishmentsToRemove.forEach(async punishment => {
       const guild = await this.client.guilds.fetch(punishment.guildId);
@@ -30,8 +29,8 @@ export default class RemoveExpiringPunishments extends Task {
       const embed = new EmbedBuilder()
         .setTimestamp()
         .setColor(colors.base)
-        .setTitle(`You've been un${punishment.type}ed in ${guild}`)
-        .setDescription("Reason: ```Time's up!```");
+        .setTitle(`You've been un${punishment.type}${punishment.type.endsWith('e') ? 'd' : 'ed'} in ${guild}`)
+        .setDescription("Reason: ``Time's up!``");
       const entry = await createModlogsEntry(guild, {
         moderatorId: botMember.id,
         victimId: punishment.victimId,

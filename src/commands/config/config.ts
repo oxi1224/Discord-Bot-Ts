@@ -72,14 +72,14 @@ export default class ConfigCommand extends Command {
         switch (key) {
         case 'actionsChannel':
         case 'modlogsChannel':
-          const channel = message.guild.channels.fetch(id).catch(() => null);
+          const channel = await message.guild.channels.fetch(id).catch(() => null);
           if (!channel) return message.reply(embeds.error('Invalid channel'));
           const val = await getSetting(message.guild.id, 'loggingChannels');
           val[key] = id;
           await setSetting(message.guild.id, 'loggingChannels', val);
           break;
         case 'mutedRole':
-          const role = message.guild.roles.fetch(id).catch(() => null);
+          const role = await message.guild.roles.fetch(id).catch(() => null);
           if (!role) return message.reply(embeds.error('Invalid role'));
           await setSetting(message.guild.id, key, id);
           break;
@@ -95,7 +95,7 @@ export default class ConfigCommand extends Command {
         case 'commandChannels':
         case 'automodImmune':
         case 'lockdownChannels':
-          const channel = message.guild.channels.fetch(id).catch(() => null);
+          const channel = await message.guild.channels.fetch(id).catch(() => null);
           if (!channel) return message.reply(embeds.error('Invalid channel'));
           const arr = await getSetting(message.guild.id, key);
           if (arr.some(str => str === id)) return message.reply(embeds.error(`${id} already is in ${key}`));
@@ -111,7 +111,7 @@ export default class ConfigCommand extends Command {
         case 'commandChannels':
         case 'automodImmune':
         case 'lockdownChannels':
-          const channel = message.guild.channels.fetch(id).catch(() => null);
+          const channel = await message.guild.channels.fetch(id).catch(() => null);
           if (!channel) return message.reply(embeds.error('Invalid channel'));
           const arr = await getSetting(message.guild.id, key);
           if (!arr.some(str => str === id)) return message.reply(embeds.error(`${id} is not in ${key}`));
