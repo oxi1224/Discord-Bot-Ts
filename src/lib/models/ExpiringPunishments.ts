@@ -39,7 +39,7 @@ export class ExpiringPunishments extends Model {
   }
 }
 
-export type ExpiringPunishmentInfo = {
+export interface ExpiringPunishmentInfo {
   victimId: Snowflake,
   guildId: Snowflake,
   type: string,

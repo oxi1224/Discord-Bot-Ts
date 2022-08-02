@@ -3,22 +3,22 @@ import { User, Role, NonThreadGuildBasedChannel, Snowflake, CommandInteractionOp
 import { DurationString } from "./constants.js";
 import { EventEmitter } from 'events';
 
-export type ClassConstructor<constructable> = {
+export interface ClassConstructor<constructable> {
   new (): constructable,
 }
 
-export type CustomClientOptions = {
+export interface CustomClientOptions {
   owners: Snowflake[],
 }
 
-export type CommandHandlerOptions = {
+export interface CommandHandlerOptions {
   commandExportFile: string,
   prefix: string,
   flagRegex?: RegExp,
   aliasReplacement?: RegExp,
 }
 
-export type CommandOptions = {
+export interface CommandOptions {
   aliases: string[],
   args: CommandArgument[],
   userPermissions?: PermissionResolvable,
@@ -31,7 +31,7 @@ export type CommandOptions = {
   extraInfo?: string,
 }
 
-export type CommandArgument = {
+export interface CommandArgument {
   id: string,
   type: CommandArgumentType,
   required?: boolean,
@@ -41,33 +41,33 @@ export type CommandArgument = {
   options?: InteractionChoice[]
 }
 
-export type InteractionChoice = {
+export interface InteractionChoice {
   name: string
   value: string | number
 }
 
 export type CommandArgumentType = 'duration' | 'string' | 'user' | 'channel' | 'role' | 'boolean' | 'integer' | 'number' | 'flag'
 export type Duration = `${number}${keyof typeof DurationString}`
-export type ParsedDuration = {
+export interface ParsedDuration {
   raw: string | null,
   timestamp: number | null;
 }
-export type ParsedArgs = { [key: string]: string | boolean | number | User | NonThreadGuildBasedChannel | Role | ParsedDuration | null | undefined | CommandInteractionOption }
+export interface ParsedArgs { [key: string]: string | boolean | number | User | NonThreadGuildBasedChannel | Role | ParsedDuration | null | undefined | CommandInteractionOption }
 
-export type TaskHandlerOptions = {
+export interface TaskHandlerOptions {
   taskExportFile: string,
   defaultInterval: number,
 }
 
-export type TaskOptions = {
+export interface TaskOptions {
   interval?: number,
 }
 
-export type ListenerHandlerOptions = {
+export interface ListenerHandlerOptions {
   listenerExportFile: string,
 }
 
-export type ListenerOptions = {
+export interface ListenerOptions {
   emitter: EventEmitter,
   event: string,
   method?: 'on' | 'once',

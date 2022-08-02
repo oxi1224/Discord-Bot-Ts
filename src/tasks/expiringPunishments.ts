@@ -1,4 +1,4 @@
-import { colors, ExpiringPunishments, Task, sendModlog, createModlogsEntry, PunishmentType, getSetting, GuildConfigModel, getConfig } from "#lib";
+import { colors, ExpiringPunishments, Task, sendModlog, createModlogsEntry, PunishmentType, getConfig } from "#lib";
 import { TimeInMs } from "#base";
 import { Op } from "sequelize";
 import { EmbedBuilder } from "discord.js";
