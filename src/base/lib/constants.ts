@@ -30,10 +30,10 @@ export enum DurationString {
 }
 
 export const regex = {
-  user: /(<@\d{6,18}>|\d{6,18})/,
-  channel: /(<#\d{6,18}>|\d{6,18})/,
-  role: /(<@!\d{6,18}>|\d{6,18})/,
-  snowflake: /<[\\@#&!]+\d{6,18}>/,
+  user: /(<@\d{6,18}>|\d{6,20})/,
+  channel: /(<#\d{6,18}>|\d{6,20})/,
+  role: /(<@!\d{6,18}>|\d{6,20})/,
+  snowflake: /<[\\@#&!]+\d{6,20}>/,
   duration: /^\d+(min|minute|minutes|h|hour|hours|d|day|days|w|week|weeks|m|month|months)$/i,
 };
 

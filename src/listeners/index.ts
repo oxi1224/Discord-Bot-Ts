@@ -1,5 +1,5 @@
-export * from './error/unhandledRejection.js';
-export * from './error/uncaughtException.js';
+// export * from './error/unhandledRejection.js';
+// export * from './error/uncaughtException.js';
 export * from './other/Channel.js';
 export * from './other/Message.js';
 export * from './other/Role.js';

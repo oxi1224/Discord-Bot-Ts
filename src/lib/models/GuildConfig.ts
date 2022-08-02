@@ -41,16 +41,16 @@ export class GuildConfig extends Model {
     GuildConfig.init({
       id: { type: DataTypes.STRING, primaryKey: true },
       mutedRole: { type: DataTypes.STRING, allowNull: true },
-      prefix: { type: DataTypes.STRING, allowNull: true },
-      commandChannels: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: true, defaultValue: [] },
-      automodImmune: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: true, defaultValue: [] },
-      lockdownChannels: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: false, defaultValue: [] },
+      prefix: { type: DataTypes.STRING, allowNull: false, defaultValue: '!' },
+      commandChannels: { type: DataTypes.JSONB, allowNull: true, defaultValue: [] },
+      automodImmune: { type: DataTypes.JSONB, allowNull: true, defaultValue: [] },
+      lockdownChannels: { type: DataTypes.JSONB, allowNull: false, defaultValue: [] },
       loggingChannels: { type: DataTypes.JSONB, allowNull: false, defaultValue: {} }
     }, { sequelize });
   }
 }
 
-export type GuildConfigModel = {
+export interface GuildConfigModel {
   id: Snowflake,
   mutedRole: Snowflake,
   prefix: string,
@@ -59,5 +59,10 @@ export type GuildConfigModel = {
   lockdownChannels: Snowflake[],
   loggingChannels: { [key: string]: Snowflake },
 }
-
-export const validConfigKeys: string[] = ['mutedrole', 'prefix', 'modlogschannel', 'actionschannel', 'commandChannels', 'automodImmune', 'lockdownChannels'];
+export const validConfigKeys: string[] = ['mutedDole', 'prefix', 'modlogsChannel', 'actionsChannel', 'commandChannels', 'automodImmune', 'lockdownChannels'];
+export const guildConfigKeysMap: Map<string, string> = (() => {
+  const map: Map<string, string> = new Map();
+  validConfigKeys.forEach(key => map.set(key.toLowerCase(), key));
+  return map;
+})();
+export type GuildConfigModelKey = typeof validConfigKeys[number]

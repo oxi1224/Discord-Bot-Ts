@@ -65,12 +65,12 @@ export class Client extends CustomClient {
     await this.db.sync({ alter: true });
   }
 
-  public start() {
+  public async start() {
     if (!process.env.TOKEN) this.destroy();
+    await this.dbInit();
     this.commandHandler.start();
     this.taskHandler.start();
     this.listenerHandler.start();
-    this.dbInit();
     this.login(process.env.TOKEN);
   }
 
