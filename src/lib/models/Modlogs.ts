@@ -56,7 +56,7 @@ export class Modlogs extends Model {
   }
 }
 
-export type PunishmentType = 'ban' | 'unban' | 'block' | 'unblock' | 'mute' | 'unmute' | 'timeout' | 'untimeout' | 'warn'
+export type PunishmentType = 'ban' | 'unban' | 'block' | 'unblock' | 'mute' | 'unmute' | 'timeout' | 'untimeout' | 'warn' | 'kick'
 export interface PunishmentInfo {
   guildId: Snowflake,
   id: string,

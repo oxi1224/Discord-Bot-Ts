@@ -48,7 +48,7 @@ export default class MuteCommand extends Command {
     const author = await message.guild.members.fetch(message.member as GuildMember);
     const mutedRole = await getSetting(message.guild.id, 'mutedRole') as string;
     if (!mutedRole) return message.reply(embeds.error('Mute role has not been set. Please set it via the config command before proceeding'));
-    if (!victim) return message.reply(embeds.error(`${victim} is not a member`));
+    if (!victim) return message.reply(embeds.error(`${victim} is not in the guild`));
     if (victim?.roles.cache.has(mutedRole)) return message.reply(embeds.error(`${victim} is already muted`));
     if (victim?.permissions.has(PermissionFlagsBits.ManageMessages)) return message.reply(embeds.error(`${args.user} is a staff member`));
     
