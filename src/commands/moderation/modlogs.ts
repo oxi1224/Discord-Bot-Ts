@@ -7,7 +7,7 @@ import { Op } from "sequelize";
 export default class ModlogsCommand extends Command {
   constructor() {
     super('modlogs', {
-      aliases: ['modlogs'],
+      aliases: ['modlogs', 'punishments'],
       args: [
         {
           id: 'user',
