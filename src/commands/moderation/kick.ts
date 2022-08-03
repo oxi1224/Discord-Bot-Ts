@@ -22,7 +22,7 @@ export default class KickCommand extends Command {
         }
       ],
       description: 'Kicks a member',
-      usage: 'kick <member> [reason]',
+      usage: 'kick <user> [reason]',
       examples: ['kick @oxi#6219 spamming'],
       category: 'Moderation',
       userPermissions: PermissionFlagsBits.KickMembers,

@@ -35,12 +35,17 @@ export class Modlogs extends Model {
   /**
    * Expiration timestamp of the punishment. Defaults to 'False'
    */
-  declare expires: number | null;
+  declare expires: string;
 
   /**
    * String value of the duration of the punishment. (e.g 2days)
    */
   declare duration: string | null;
+
+  /**
+   * The timestamp of when the punishment was performed.
+   */
+  declare timestamp: string;
 
   public static initialize(sequelize: Sequelize) {
     Modlogs.init({
@@ -51,7 +56,8 @@ export class Modlogs extends Model {
       type: { type: DataTypes.STRING, allowNull: false },
       reason: { type: DataTypes.TEXT, allowNull: true, defaultValue: 'None' },
       expires: { type: DataTypes.STRING, allowNull: true, defaultValue: 'False' },
-      duration: { type: DataTypes.STRING, allowNull: true, defaultValue: 'Permanent' }
+      duration: { type: DataTypes.STRING, allowNull: true, defaultValue: 'Permanent' },
+      timestamp: { type: DataTypes.STRING, allowNull: true, defaultValue: (new Date().getTime()).toString() }
     }, { sequelize });
   }
 }

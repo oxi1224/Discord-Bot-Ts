@@ -4,6 +4,7 @@ export { default as WarnCommand } from './moderation/warn.js';
 export { default as MuteCommand } from './moderation/mute.js';
 export { default as UnMuteCommand } from './moderation/unmute.js';
 export { default as KickCommand } from './moderation/kick.js';
+export { default as ModlogsCommand } from './moderation/modlogs.js';
 export { default as PingCommand } from './info/ping.js';
 export { default as HelpCommand } from './info/help.js';
 export { default as SetCommand } from './config/config.js';

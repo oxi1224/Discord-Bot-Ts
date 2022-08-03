@@ -17,7 +17,8 @@ export async function createModlogsEntry(guild: Guild, options: ModlogUtilOption
     type: options.type,
     reason: options.reason ?? 'None',
     expires: options.expires ?? 'False',
-    duration: options.duration ?? 'Permanent'
+    duration: options.duration ?? 'Permanent',
+    timestamp: (new Date().getTime()).toString()
   });
   return await entry.save();
 }

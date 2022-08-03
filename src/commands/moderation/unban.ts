@@ -22,7 +22,7 @@ export default class UnBan extends Command {
         }
       ],
       description: 'Bans a member',
-      usage: 'unban <member> [duration] [reason]',
+      usage: 'unban <user> [duration] [reason]',
       examples: ['unban @oxi#6219 spamming', 'unban @oxi#6219 7d spamming'],
       category: 'Moderation',
       userPermissions: PermissionFlagsBits.BanMembers,

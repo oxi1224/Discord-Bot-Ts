@@ -29,7 +29,7 @@ export default class BanCommand extends Command {
         }
       ],
       description: 'Bans a member',
-      usage: 'ban <member> [duration] [reason]',
+      usage: 'ban <user> [duration] [reason]',
       examples: ['ban @oxi#6219 spamming', 'ban @oxi#6219 7d spamming'],
       category: 'Moderation',
       userPermissions: PermissionFlagsBits.BanMembers,
