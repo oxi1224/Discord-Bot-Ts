@@ -42,7 +42,6 @@ export default class MuteCommand extends Command {
     duration: ParsedDuration,
     reason: string,
   }) {
-    console.log(args, args.reason);
     if (!message.guild?.available) return;
     if (!args.user) return message.reply(embeds.error('Invalid user'));
     const victim = await message.guild.members.fetch(args.user).catch(() => null);
@@ -94,7 +93,7 @@ export default class MuteCommand extends Command {
       await victim?.roles.add(mutedRole);
       await sendModlog(message.guild, Object.assign(options, { id: modlogEntry.id }));
       if (!dmMessage) return await message.reply(embeds.info(`Failed to DM ${args.user}, action still performed`));
-      await message.reply(embeds.success(`${args.user} has been successfully muted`));    
+      await message.reply(embeds.success(`${args.user} has been successfully muted`));
     } catch (e) {
       await modlogEntry?.destroy();
       await expiringPunishmentsEntry?.destroy();
