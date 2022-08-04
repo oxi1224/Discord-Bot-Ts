@@ -60,8 +60,8 @@ export default class BanCommand extends Command {
       victimId: args.user.id,
       type: 'ban',
       reason: args.reason,
-      expires: args.duration.timestamp ?? 'False',
-      duration: args.duration.raw ?? 'Permanent'
+      expires: args.duration.timestamp,
+      duration: args.duration.raw
     };
     let modlogEntry, expiringPunishmentsEntry;
 

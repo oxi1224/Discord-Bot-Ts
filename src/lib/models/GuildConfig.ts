@@ -42,9 +42,9 @@ export class GuildConfig extends Model {
       id: { type: DataTypes.STRING, primaryKey: true },
       mutedRole: { type: DataTypes.STRING, allowNull: true },
       prefix: { type: DataTypes.STRING, allowNull: false, defaultValue: '!' },
-      commandChannels: { type: DataTypes.JSONB, allowNull: true, defaultValue: [] },
-      automodImmune: { type: DataTypes.JSONB, allowNull: true, defaultValue: [] },
-      lockdownChannels: { type: DataTypes.JSONB, allowNull: false, defaultValue: [] },
+      commandChannels: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: true, defaultValue: [] },
+      automodImmune: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: true, defaultValue: [] },
+      lockdownChannels: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: true, defaultValue: [] },
       loggingChannels: { type: DataTypes.JSONB, allowNull: false, defaultValue: {} }
     }, { sequelize });
   }

@@ -18,7 +18,7 @@ export class GuildMemberAdd extends Listener {
         victimId: member.id,
         type: 'mute',
         [Op.or]: [
-          { expires: { [Op.gt]: (new Date().getTime()).toString() } },
+          { expires: { [Op.gt]: new Date().getTime() } },
           { expires: 'False' }
         ]
       }

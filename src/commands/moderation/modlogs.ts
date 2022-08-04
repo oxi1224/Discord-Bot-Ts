@@ -1,4 +1,4 @@
-import { ParsedDuration } from '#base';
+import { ParsedDuration, TimeInMs } from '#base';
 import { Message, User, EmbedBuilder, CommandInteraction, EmbedField, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { ApplicationCommandOptionType, PermissionFlagsBits } from "discord-api-types/v10";
 import { Command, embeds, logError, colors, Modlogs } from '#lib';
@@ -77,7 +77,7 @@ Reason: \`\`${p.reason}\`\`
 Moderator: <@${p.moderatorId}>
 Punishment Time: <t:${Math.floor(parseInt(p.timestamp) / 1000)}>
 Duration: ${p.duration}
-Expires: ${p.expires === 'False' ? p.expires : `<t:${Math.floor(parseInt(p.expires) / 1000)}>`}
+Expires: ${p.expires ? `<t:${Math.floor(p.expires / 1000)}>` : 'False'}
 Modlog ID: ${p.id}
         `.trim(), inline: false });
       if (fields.length === 4) {
@@ -96,9 +96,9 @@ Modlog ID: ${p.id}
       .setFields(fields));
     
     let page = 0;
-    embedArray[0].setFooter({ 'text': `Page ${page}/${embedArray.length - 1}` });
+    embedArray[0].setFooter({ 'text': `Page ${page + 1}/${embedArray.length}` });
     const msg = await message.reply({ embeds: [embedArray[0]], components: [buttons] });
-    const collector = msg.createMessageComponentCollector();
+    const collector = msg.createMessageComponentCollector({ 'time': TimeInMs.Second * 30 });
     collector.on('collect', async (i) => {
       if (!i.isButton() || !['modlogs-back', 'modlogs-delete', 'modlogs-next'].includes(i.customId)) return;
       switch (i.customId) {
@@ -106,7 +106,7 @@ Modlog ID: ${p.id}
         if (page === 0) { i.deferUpdate(); return; }
         page--;
         i.update({
-          embeds: [embedArray[page].setFooter({ 'text': `Page ${page}/${embedArray.length - 1}` })],
+          embeds: [embedArray[page].setFooter({ 'text': `Page ${page + 1}/${embedArray.length}` })],
           components: [buttons]
         });
         break;
@@ -114,7 +114,7 @@ Modlog ID: ${p.id}
         if (page === embedArray.length - 1) { i.deferUpdate(); return; }
         page++;
         i.update({
-          embeds: [embedArray[page].setFooter({ 'text': `Page ${page}/${embedArray.length - 1}` })],
+          embeds: [embedArray[page].setFooter({ 'text': `Page ${page + 1}/${embedArray.length}` })],
           components: [buttons]
         });
         break;

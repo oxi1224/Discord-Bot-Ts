@@ -15,7 +15,7 @@ export default class RemoveExpiringPunishments extends Task {
       where: {
         expires: {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          [Op.lt]: (new Date().getTime() + this.interval!).toString()
+          [Op.lt]: new Date().getTime() + this.interval!
         } 
       }
     }).catch(() => null);
@@ -55,7 +55,7 @@ export default class RemoveExpiringPunishments extends Task {
         moderatorId: botMember.id,
         victimId: punishment.victimId,
         type: `un${punishment.type}` as PunishmentType,
-        reason: "``Time's up!```"
+        reason: "Time's up!"
       });
       await victim.send({ embeds: [embed] }).catch(() => null);
       await punishment.destroy();

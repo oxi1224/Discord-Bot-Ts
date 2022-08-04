@@ -55,15 +55,15 @@ export default class MuteCommand extends Command {
     const embed = new EmbedBuilder()
       .setTimestamp()
       .setColor(colors.base)
-      .setTitle(`You've been muted${args.duration.raw ? '' : ' permanently'} in ${message.guild} ${args.duration.raw ? `for ${args.duration.raw}` : ''}`)
+      .setTitle(`You've been muted${args.duration?.raw ? '' : ' permanently'} in ${message.guild} ${args.duration?.raw ? `for ${args.duration.raw}` : ''}`)
       .setDescription(`Reason: \`\`${args.reason ?? 'None'}\`\``);
     const options: ModlogUtilOptions = {
       moderatorId: author.id,
       victimId: args.user.id,
       type: 'mute',
       reason: args.reason,
-      expires: args.duration.timestamp ?? 'False',
-      duration: args.duration.raw ?? 'Permanent'
+      expires: args.duration?.timestamp,
+      duration: args.duration?.raw
     };
     let modlogEntry, expiringPunishmentsEntry;
 
@@ -74,7 +74,7 @@ export default class MuteCommand extends Command {
       return message.reply(embeds.error('An error occured while creating the modlog entry. Please contact oxi#6219'));
     }
 
-    if (args.duration.timestamp) {
+    if (args.duration?.timestamp) {
       try {
         expiringPunishmentsEntry = await createExpiringPunishmentsEntry(message.guild, {
           victimId: args.user.id,

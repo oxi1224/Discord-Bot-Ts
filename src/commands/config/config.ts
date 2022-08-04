@@ -93,14 +93,21 @@ export default class ConfigCommand extends Command {
       case 'add':
         switch (key) {
         case 'commandChannels':
-        case 'automodImmune':
         case 'lockdownChannels':
           const channel = await message.guild.channels.fetch(id).catch(() => null);
           if (!channel) return message.reply(embeds.error('Invalid channel'));
-          const arr = await getSetting(message.guild.id, key);
-          if (arr.some(str => str === id)) return message.reply(embeds.error(`${id} already is in ${key}`));
-          arr.push(id);
-          await setSetting(message.guild.id, key, arr);
+          const channelArr = await getSetting(message.guild.id, key);
+          if (channelArr.some(str => str === id)) return message.reply(embeds.error(`${id} already is in ${key}`));
+          channelArr.push(id);
+          await setSetting(message.guild.id, key, channelArr);
+          break;
+        case 'automodImmune':
+          const user = await message.guild.members.fetch(id).catch(() => null);
+          if (!user) return message.reply(embeds.error('Invalid user'));
+          const userArr = await getSetting(message.guild.id, key);
+          if (userArr.some(str => str === id)) return message.reply(embeds.error(`${id} already is in ${key}`));
+          userArr.push(id);
+          await setSetting(message.guild.id, key, userArr);
           break;
         default:
           return message.reply(embeds.error('This key cannot be used with add'));
@@ -109,13 +116,19 @@ export default class ConfigCommand extends Command {
       case 'remove':
         switch (key) {
         case 'commandChannels':
-        case 'automodImmune':
         case 'lockdownChannels':
           const channel = await message.guild.channels.fetch(id).catch(() => null);
           if (!channel) return message.reply(embeds.error('Invalid channel'));
-          const arr = await getSetting(message.guild.id, key);
-          if (!arr.some(str => str === id)) return message.reply(embeds.error(`${id} is not in ${key}`));
-          await setSetting(message.guild.id, key, arr.filter(str => str === id));
+          const channelArr = await getSetting(message.guild.id, key);
+          if (!channelArr.some(str => str === id)) return message.reply(embeds.error(`${id} is not in ${key}`));
+          await setSetting(message.guild.id, key, channelArr.filter(str => str === id));
+          break;
+        case 'automodImmune':
+          const user = await message.guild.members.fetch(id).catch(() => null);
+          if (!user) return message.reply(embeds.error('Invalid user'));
+          const userArr = await getSetting(message.guild.id, key);
+          if (!userArr.some(str => str === id)) return message.reply(embeds.error(`${id} is not in ${key}`));
+          await setSetting(message.guild.id, key, userArr.filter(str => str === id));
           break;
         default:
           return message.reply(embeds.error('This key cannot be used with remove'));

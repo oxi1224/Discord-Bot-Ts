@@ -35,12 +35,12 @@ export class Modlogs extends Model {
   /**
    * Expiration timestamp of the punishment. Defaults to 'False'
    */
-  declare expires: string;
+  declare expires: number;
 
   /**
    * String value of the duration of the punishment. (e.g 2days)
    */
-  declare duration: string | null;
+  declare duration: string;
 
   /**
    * The timestamp of when the punishment was performed.
@@ -55,9 +55,9 @@ export class Modlogs extends Model {
       moderatorId: { type: DataTypes.STRING, allowNull: false },
       type: { type: DataTypes.STRING, allowNull: false },
       reason: { type: DataTypes.TEXT, allowNull: true, defaultValue: 'None' },
-      expires: { type: DataTypes.STRING, allowNull: true, defaultValue: 'False' },
+      expires: { type: DataTypes.BIGINT, allowNull: true },
       duration: { type: DataTypes.STRING, allowNull: true, defaultValue: 'Permanent' },
-      timestamp: { type: DataTypes.STRING, allowNull: true, defaultValue: (new Date().getTime()).toString() }
+      timestamp: { type: DataTypes.BIGINT, allowNull: true, defaultValue: new Date().getTime() }
     }, { sequelize });
   }
 }
@@ -70,6 +70,6 @@ export interface PunishmentInfo {
   moderatorId: Snowflake,
   type: PunishmentType,
   reason?: string,
-  expires?: number | string | null,
+  expires?: number | null,
   duration?: string | null,
 }

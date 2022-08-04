@@ -16,8 +16,8 @@ export async function createModlogsEntry(guild: Guild, options: ModlogUtilOption
     moderatorId: options.moderatorId,
     type: options.type,
     reason: options.reason ?? 'None',
-    expires: options.expires ?? 'False',
-    duration: options.duration ?? 'Permanent',
+    expires: options.expires,
+    duration: options.duration,
     timestamp: (new Date().getTime()).toString()
   });
   return await entry.save();
@@ -45,11 +45,11 @@ export async function sendModlog(guild: Guild, options: Omit<PunishmentInfo, 'gu
   const fields: EmbedField[] = [
     { name: 'Moderator', value: `${moderator}`, inline: true },
     { name: 'Victim', value: `<@${options.victimId}>`, inline: true },
-    { name: 'Reason', value: options.reason ?? 'None', inline: true },
     { name: 'Case ID', value: options.id, inline: true },
+    { name: 'Reason', value: options.reason ?? 'None', inline: true },
   ];
   if (options.duration) fields.push({ name: 'Duration', value: options.duration ?? 'Permanent', inline: true });
-  if (options.expires) fields.push({ name: 'Expires', value: typeof options.expires === 'number' ? `<t:${Math.floor(parseInt(options.expires.toString()) / 1000)}>` : 'False', inline: true });
+  if (options.expires) fields.push({ name: 'Expires', value:`<t:${Math.floor(options.expires / 1000)}>`, inline: true });
 
   embed.setFields(fields);
 
