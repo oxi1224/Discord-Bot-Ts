@@ -1,7 +1,7 @@
 import { ParsedDuration, TimeInMs } from '#base';
-import { Message, User, EmbedBuilder, CommandInteraction, EmbedField, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { Message, User, EmbedBuilder, CommandInteraction, EmbedField, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentEmojiResolvable } from 'discord.js';
 import { ApplicationCommandOptionType, PermissionFlagsBits } from "discord-api-types/v10";
-import { Command, embeds, logError, colors, Modlogs } from '#lib';
+import { Command, embeds, logError, colors, Modlogs, emotes } from '#lib';
 import { Op } from "sequelize";
 
 export default class ModlogsCommand extends Command {
@@ -38,16 +38,24 @@ export default class ModlogsCommand extends Command {
     const buttons = new ActionRowBuilder<ButtonBuilder>()
       .addComponents(
         new ButtonBuilder()
-          .setCustomId('modlogs-back')
-          .setLabel('Back')
+          .setCustomId('modlogs-first')
+          .setEmoji(emotes.first as ComponentEmojiResolvable)
           .setStyle(ButtonStyle.Primary),
         new ButtonBuilder()
+          .setCustomId('modlogs-back')
+          .setEmoji(emotes.back as ComponentEmojiResolvable)
+          .setStyle(ButtonStyle.Success),
+        new ButtonBuilder()
           .setCustomId('modlogs-delete')
-          .setLabel('Delete')
+          .setEmoji(emotes.stop as ComponentEmojiResolvable)
           .setStyle(ButtonStyle.Danger),
         new ButtonBuilder()
           .setCustomId('modlogs-next')
-          .setLabel('Next')
+          .setEmoji(emotes.next as ComponentEmojiResolvable)
+          .setStyle(ButtonStyle.Success),
+        new ButtonBuilder()
+          .setCustomId('modlogs-last')
+          .setEmoji(emotes.last as ComponentEmojiResolvable)
           .setStyle(ButtonStyle.Primary),
       );
 
@@ -79,6 +87,7 @@ Punishment Time: <t:${Math.floor(parseInt(p.timestamp) / 1000)}>
 Duration: ${p.duration}
 Expires: ${p.expires ? `<t:${Math.floor(p.expires / 1000)}>` : 'False'}
 Modlog ID: ${p.id}
+${p.extraInfo ?? ''}
         `.trim(), inline: false });
       if (fields.length === 4) {
         embedArray.push(new EmbedBuilder()
@@ -98,31 +107,34 @@ Modlog ID: ${p.id}
     let page = 0;
     embedArray[0].setFooter({ 'text': `Page ${page + 1}/${embedArray.length}` });
     const msg = await message.reply({ embeds: [embedArray[0]], components: [buttons] });
-    const collector = msg.createMessageComponentCollector({ 'time': TimeInMs.Second * 30 });
+    const collector = msg.createMessageComponentCollector({ 'time': TimeInMs.Second * 60 });
     collector.on('collect', async (i) => {
-      if (!i.isButton() || !['modlogs-back', 'modlogs-delete', 'modlogs-next'].includes(i.customId)) return;
+      if (!i.isButton()) return;
       switch (i.customId) {
       case 'modlogs-back':
         if (page === 0) { i.deferUpdate(); return; }
         page--;
-        i.update({
-          embeds: [embedArray[page].setFooter({ 'text': `Page ${page + 1}/${embedArray.length}` })],
-          components: [buttons]
-        });
         break;
       case 'modlogs-next':
         if (page === embedArray.length - 1) { i.deferUpdate(); return; }
         page++;
-        i.update({
-          embeds: [embedArray[page].setFooter({ 'text': `Page ${page + 1}/${embedArray.length}` })],
-          components: [buttons]
-        });
+        break;
+      case 'modlogs-first':
+        page = 0;
+        break;
+      case 'modlogs-last':
+        page = embedArray.length - 1;
         break;
       case 'modlogs-delete':
         if (msg instanceof Message) msg.delete();
         if (msg instanceof CommandInteraction) msg.deleteReply();
         collector.stop();
+        break;
       }
+      i.update({
+        embeds: [embedArray[page].setFooter({ 'text': `Page ${page + 1}/${embedArray.length}` })],
+        components: [buttons]
+      });
     });
     return;
   }

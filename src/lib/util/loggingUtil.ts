@@ -18,7 +18,8 @@ export async function createModlogsEntry(guild: Guild, options: ModlogUtilOption
     reason: options.reason ?? 'None',
     expires: options.expires,
     duration: options.duration,
-    timestamp: new Date().getTime()
+    timestamp: new Date().getTime(),
+    extraInfo: options.extraInfo
   });
   return await entry.save();
 }
@@ -46,10 +47,12 @@ export async function sendModlog(guild: Guild, options: Omit<PunishmentInfo, 'gu
     { name: 'Moderator', value: `${moderator}`, inline: true },
     { name: 'Victim', value: `<@${options.victimId}>`, inline: true },
     { name: 'Case ID', value: options.id, inline: true },
-    { name: 'Reason', value: options.reason ?? 'None', inline: true },
+    { name: 'Reason', value: `\`\`${options.reason ?? 'None'}\`\``, inline: true },
   ];
-  if (Object.keys(options).includes('duration')) fields.push({ name: 'Duration', value: options.duration ?? 'Permanent', inline: true });
-  if (Object.keys(options).includes('expires') && options.duration && options.expires) fields.push({ name: 'Expires', value:`<t:${Math.floor(options.expires / 1000)}>`, inline: true });
+  if (options.duration) fields.push({ name: 'Duration', value: options.duration, inline: true });
+  if (options.duration !== 'Permanent' && options.expires) fields.push({ name: 'Expires', value:`<t:${Math.floor(options.expires / 1000)}>`, inline: true });
+  if (options.extraInfo) fields.push({ name: 'Extra info', value: options.extraInfo, inline: true });
+  if (fields.length % 2 !== 0) fields.push({ name: '\u200B', value: '\u200B', inline: true });
   embed.setFields(fields);
 
   const channelId = (await getSetting(guild.id, 'loggingChannels')).modlogsChannel;

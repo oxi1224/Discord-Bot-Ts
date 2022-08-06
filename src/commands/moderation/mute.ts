@@ -63,7 +63,7 @@ export default class MuteCommand extends Command {
       type: 'mute',
       reason: args.reason,
       expires: args.duration?.timestamp,
-      duration: args.duration?.raw
+      duration: args.duration?.raw ?? 'Permanent'
     };
     let modlogEntry, expiringPunishmentsEntry;
 

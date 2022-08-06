@@ -47,6 +47,11 @@ export class Modlogs extends Model {
    */
   declare timestamp: string;
 
+  /**
+   * Extra info about the punishment.
+   */
+  declare extraInfo: Snowflake;
+
   public static initialize(sequelize: Sequelize) {
     Modlogs.init({
       id: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
@@ -57,7 +62,8 @@ export class Modlogs extends Model {
       reason: { type: DataTypes.TEXT, allowNull: true, defaultValue: 'None' },
       expires: { type: DataTypes.BIGINT, allowNull: true },
       duration: { type: DataTypes.STRING, allowNull: true, defaultValue: 'Permanent' },
-      timestamp: { type: DataTypes.BIGINT, allowNull: true, defaultValue: new Date().getTime() }
+      timestamp: { type: DataTypes.BIGINT, allowNull: true, defaultValue: new Date().getTime() },
+      extraInfo: { type: DataTypes.STRING, allowNull: true }
     }, { sequelize });
   }
 }
@@ -72,4 +78,5 @@ export interface PunishmentInfo {
   reason?: string,
   expires?: number | null,
   duration?: string | null,
+  extraInfo?: string
 }

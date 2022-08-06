@@ -9,9 +9,14 @@ export const colors: {[key: string]: ColorResolvable} = Object.freeze({
 } as const);
 
 export const emotes: {[key: string]: EmojiResolvable} = Object.freeze({
-  "error": "<:error:980866363461599292>",
-  "success": "<:success:980866382323396723>",
-  "info": "<:info:980866381283201025>"
+  error: "<:error:980866363461599292>",
+  success: "<:success:980866382323396723>",
+  info: "<:info:980866381283201025>",
+  first: "<:first:1005496736053215292>",
+  back: "<:back:1005496734497128528>",
+  stop: "<:stop:1005496740297838693>",
+  next: "<:next:1005496738691432490>",
+  last: "<:last:1005497936257495120>"
 });
 
 export const otherIDs = {
