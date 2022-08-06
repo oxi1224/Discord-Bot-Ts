@@ -22,7 +22,6 @@ export default class PingCommand extends Command {
         { name: 'Api latency', value: `\`\`${Math.round(apiPing)}ms\`\``, inline: true }
       ])
       .setColor(colors.base);
-      
     return message.reply({ embeds: [embed] });
   }
 }

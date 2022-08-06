@@ -67,11 +67,12 @@ export default class KickCommand extends Command {
       await message.guild.members.kick(args.user.id, args.reason);
       await sendModlog(message.guild, Object.assign(options, { id: modlogEntry.id }));
       if (!dmMessage) return await message.reply(embeds.info(`Failed to DM ${args.user}, action still performed`));
-      return await message.reply(embeds.success(`${args.user} has been successfully kicked`));    
+      await message.reply(embeds.success(`${args.user} has been successfully kicked`));    
     } catch (e) {
       await modlogEntry?.destroy();
       await logError(e as Error);
-      return message.reply(embeds.error('An error has occured while kicking the user'));
+      message.reply(embeds.error('An error has occured while kicking the user'));
     }
+    return;
   }
 }

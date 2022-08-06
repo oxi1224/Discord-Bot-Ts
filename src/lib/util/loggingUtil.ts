@@ -48,9 +48,8 @@ export async function sendModlog(guild: Guild, options: Omit<PunishmentInfo, 'gu
     { name: 'Case ID', value: options.id, inline: true },
     { name: 'Reason', value: options.reason ?? 'None', inline: true },
   ];
-  if (options.duration) fields.push({ name: 'Duration', value: options.duration ?? 'Permanent', inline: true });
-  if (options.expires) fields.push({ name: 'Expires', value:`<t:${Math.floor(options.expires / 1000)}>`, inline: true });
-
+  if (Object.keys(options).includes('duration')) fields.push({ name: 'Duration', value: options.duration ?? 'Permanent', inline: true });
+  if (Object.keys(options).includes('expires') && options.duration && options.expires) fields.push({ name: 'Expires', value:`<t:${Math.floor(options.expires / 1000)}>`, inline: true });
   embed.setFields(fields);
 
   const channelId = (await getSetting(guild.id, 'loggingChannels')).modlogsChannel;

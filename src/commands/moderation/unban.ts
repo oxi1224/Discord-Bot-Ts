@@ -69,11 +69,12 @@ export default class UnBan extends Command {
       await message.guild.bans.remove(args.user, args.reason ?? 'None');
       await sendModlog(message.guild, Object.assign(options, { id: modlogEntry.id }));
       if (!dmMessage) return await message.reply(embeds.info(`Failed to DM ${args.user}, action still performed`));
-      return await message.reply(embeds.success(`${args.user} has been successfully unbanned`));    
+      await message.reply(embeds.success(`${args.user} has been successfully unbanned`));    
     } catch (e) {
       await modlogEntry?.destroy();
       await logError(e as Error);
-      return message.reply(embeds.error('An error has occured while unbanning the user'));
+      await message.reply(embeds.error('An error has occured while unbanning the user'));
     }
+    return;
   }
 }
