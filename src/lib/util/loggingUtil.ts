@@ -39,7 +39,7 @@ export async function sendModlog(guild: Guild, options: Omit<PunishmentInfo, 'gu
   const embed = new EmbedBuilder()
     .setTimestamp()
     .setColor(colors.base)
-    .setAuthor({ name: `${moderator.user.username}#${moderator.user.discriminator}` })
+    .setAuthor({ name: `${moderator.user.username}#${moderator.user.discriminator}`, iconURL: moderator.displayAvatarURL() })
     .setThumbnail(moderator.displayAvatarURL())
     .setTitle(`Action: ${options.type}`);
   const fields: EmbedField[] = [

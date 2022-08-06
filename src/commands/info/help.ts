@@ -42,6 +42,7 @@ export default class HelpCommand extends Command {
     if (args.command) {
       const matchingCommand: Command = commands.filter(obj => obj ? obj.aliases.includes(args.command) : null)[0] as Command;
       if (!matchingCommand) return message.reply('Invalid command');
+      embed.setTitle(`${matchingCommand.id} command`);
       fields.push(
         { name: 'Usage', value: `\`\`${matchingCommand.usage}\`\``, inline: false },
         { name: 'Example', value: matchingCommand.examples.map(str => `\`\`${str}\`\``).join('\n'), inline: false },
@@ -61,8 +62,8 @@ export default class HelpCommand extends Command {
       }
       if (matchingCommand.extraInfo) fields.push({ name: 'Extra Information', value: matchingCommand.extraInfo, inline: false }); 
     }
-    embed.addFields(fields);
-    embed.setColor(colors.base);
+    embed.addFields(fields)
+      .setColor(colors.base);
     return message.reply({ embeds: [embed] });   
   }
 }

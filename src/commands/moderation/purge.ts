@@ -43,7 +43,7 @@ export default class PurgeCommand extends Command {
     const embed = new EmbedBuilder()
       .setTitle(`Action: purge`)
       .setColor(colors.base)
-      .setAuthor({ name: `${author.user.username}#${author.user.discriminator}` })
+      .setAuthor({ name: `${author.user.username}#${author.user.discriminator}`, iconURL: author.displayAvatarURL() })
       .setThumbnail(author.displayAvatarURL())
       .setTimestamp()
       .setFields([

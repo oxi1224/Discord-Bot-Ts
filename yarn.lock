@@ -224,6 +224,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/humanize-duration@npm:^3.27.1":
+  version: 3.27.1
+  resolution: "@types/humanize-duration@npm:3.27.1"
+  checksum: d3d69b64918d0cee4aa69580dd04d1b96e3385645d398e27b1535f8c6d0252b0235defb16619379a6196c6bbdfc7b6032f010b25cac44903a32b09db8aa06f30
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:^7.0.9":
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
@@ -618,6 +625,7 @@ __metadata:
   resolution: "discord-bot@workspace:."
   dependencies:
     "@discordjs/rest": ^0.5.0
+    "@types/humanize-duration": ^3.27.1
     "@types/lodash": ^4.14.182
     "@types/node": ^18.0.6
     "@typescript-eslint/eslint-plugin": ^5.30.0
@@ -625,6 +633,7 @@ __metadata:
     discord.js: ^14.0.3
     dotenv: ^16.0.1
     eslint: ^8.18.0
+    humanize-duration: ^3.27.2
     lodash: ^4.17.21
     nanoid: ^4.0.0
     node-fetch: ^3.2.6
@@ -1007,6 +1016,13 @@ __metadata:
   version: 4.0.0
   resolution: "has-flag@npm:4.0.0"
   checksum: 261a1357037ead75e338156b1f9452c016a37dcd3283a972a30d9e4a87441ba372c8b81f818cd0fbcd9c0354b4ae7e18b9e1afa1971164aef6d18c2b6095a8ad
+  languageName: node
+  linkType: hard
+
+"humanize-duration@npm:^3.27.2":
+  version: 3.27.2
+  resolution: "humanize-duration@npm:3.27.2"
+  checksum: 2f9af430ca7dfa0a8c2a1c6323b7eaadc1bd589ec204977f0e9669ce978a1061db8233401a8290773e29f6ffc3d8f3a82bdc699a3034e061fd7299aaf4b9ef87
   languageName: node
   linkType: hard
 

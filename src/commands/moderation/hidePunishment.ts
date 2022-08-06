@@ -62,7 +62,7 @@ export default class HidePunishmentCommand extends Command {
       .setTimestamp()
       .setColor(colors.base)
       .setTitle('Action: modlogHide')
-      .setAuthor({ name: `${author.user.username}#${author.user.discriminator}` })
+      .setAuthor({ name: `${author.user.username}#${author.user.discriminator}`, iconURL: author.displayAvatarURL() })
       .setThumbnail(author.displayAvatarURL())
       .setFields([
         { name: 'Moderator', value: `${author}`, inline: true },
