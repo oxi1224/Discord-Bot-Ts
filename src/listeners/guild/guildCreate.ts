@@ -14,7 +14,7 @@ export class GuildCreate extends Listener {
     GuildConfig.create({ id: guild.id });
 
     const parentGuild = await this.client.guilds.fetch(otherIDs.parentGuild);
-    const channel = await parentGuild.channels.fetch(otherIDs.guildCreate) as TextChannel;
+    const channel = await parentGuild.channels.fetch(otherIDs.guildCreateChannel) as TextChannel;
     const embed = new EmbedBuilder()
       .setColor(colors.success)
       .setTimestamp()

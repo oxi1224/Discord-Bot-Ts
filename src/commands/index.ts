@@ -9,6 +9,7 @@ export { default as HidePunishmentCommand } from './moderation/hidePunishment.js
 export { default as PurgeCommand } from './moderation/purge.js';
 export { default as BlockCommand } from './moderation/block.js';
 export { default as UnblockCommand } from './moderation/unblock.js';
+export { default as RoleCommand } from './moderation/role.js';
 export { default as PingCommand } from './info/ping.js';
 export { default as HelpCommand } from './info/help.js';
 export { default as UserCommand } from './info/user.js';

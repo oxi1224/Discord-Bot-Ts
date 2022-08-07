@@ -15,7 +15,7 @@ export class GuildDelete extends Listener {
     row?.destroy();
 
     const parentGuild = await this.client.guilds.fetch(otherIDs.parentGuild);
-    const channel = await parentGuild.channels.fetch(otherIDs.guildDelete) as TextChannel;
+    const channel = await parentGuild.channels.fetch(otherIDs.guildDeleteChannel) as TextChannel;
     const embed = new EmbedBuilder()
       .setColor(colors.error)
       .setTimestamp()

@@ -168,8 +168,8 @@ export abstract class BaseCommand {
           value = await message.guild?.channels.fetch(contentArray[arg.index].replace(/[\\<>@#&!]/g, '')).catch(() => null);
           break;
         case 'role':
-          if (!contentArray[arg.index].match(regex.role)) {value = null; break;}
-          value = await message.guild?.roles.fetch(contentArray[arg.index].replace(/[\\<>@#&!]/g, '')).catch(() => null);
+          value = await message.guild?.roles.fetch(contentArray[arg.index].replace(/[\\<>@#&!]/g, '')).catch(() => null) 
+            ?? message.guild?.roles.cache.find(role => role.name === contentArray[arg.index].replace(/[\\<>@#&!]/g, '')) ?? null;
           break;
         case 'string':
           value = contentArray.slice(arg.index, arg.index + arg.length).filter(str => !this.commandHandler?.flagRegex.test(str)).join(' '); 

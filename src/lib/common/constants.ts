@@ -22,8 +22,8 @@ export const emotes: {[key: string]: EmojiResolvable} = Object.freeze({
 export const otherIDs = {
   parentGuild: "613024666079985702",
   mainError: "980478015412772884",
-  guildCreate: "1002916757222195280",
-  guildDelete: "1002916792831844422" 
+  guildCreateChannel: "1002916757222195280",
+  guildDeleteChannel: "1002916792831844422" 
 };
 
 export const whsRules = [
