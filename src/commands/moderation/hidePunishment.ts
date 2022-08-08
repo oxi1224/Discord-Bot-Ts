@@ -39,7 +39,7 @@ export default class HidePunishmentCommand extends Command {
     if (!message.guild?.available) return;
     if (!args.user) return message.reply(embeds.error('Invalid user'));
     const author = await message.guild.members.fetch(message.member as GuildMember);
-    const channelId = (await getSetting(message.guild.id, 'loggingChannels')).modlogsChannel;
+    const channelId = (await getSetting(message.guild.id, 'modlogsChannel'));
     const channel = channelId ? await message.guild.channels.fetch(channelId).catch(() => null) : null;
     let modlog;
     try {

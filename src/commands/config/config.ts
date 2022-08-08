@@ -1,6 +1,6 @@
 import { Message, CommandInteraction } from 'discord.js';
 import { ApplicationCommandOptionType, PermissionFlagsBits } from "discord-api-types/v10";
-import { Command, validConfigKeys, setSetting, embeds, logError, guildConfigKeysMap, GuildConfigModelKey, getSetting } from '#lib';
+import { Command, validConfigKeys, setSetting, embeds, logError, guildConfigKeysMap, GuildConfigModelKey, getSetting, GuildConfigModel } from '#lib';
 import { InteractionChoice } from '#base';
 
 export default class ConfigCommand extends Command {
@@ -18,7 +18,8 @@ export default class ConfigCommand extends Command {
           options: [
             { name: 'set', value: 'set' },
             { name: 'add', value: 'add' },
-            { name: 'remove', value: 'remove' }
+            { name: 'remove', value: 'remove' },
+            { name: 'clear', value: 'clear' }
           ]
         },
         {
@@ -44,7 +45,7 @@ export default class ConfigCommand extends Command {
         }
       ],
       description: 'Changes a config value.',
-      extraInfo: `» **Valid methods**: set, add, remove.
+      extraInfo: `» **Valid methods**: set, add, remove, clear.
 » **Valid keys**: ${validConfigKeys.join(', ')}
 » **Every value instead of prefix is a discord snowflake (ID).**`,
       usage: 'config <method> <key> <value>',
@@ -60,23 +61,22 @@ export default class ConfigCommand extends Command {
     value: string
   }) {
     if (!message.guild?.available) return;
-    if (!['set', 'add', 'remove'].includes(args.method)) return message.reply(embeds.error('Invalid method (must be set, add or remove)'));
+    if (!['set', 'add', 'remove', 'clear'].includes(args.method)) return message.reply(embeds.error('Invalid method (must be set, add or clear)'));
     const key = guildConfigKeysMap.get(args.key) as GuildConfigModelKey;
     if (!key) return message.reply(embeds.error('Invalid key'));
-    if (!args.value) return message.reply(embeds.error('Invalid value'));
+    if (!args.value && args.method !== 'clear') return message.reply(embeds.error('Invalid value'));
 
-    const id = args.value.replace(/[\\<>@#&!]/g, '');
+    const id = args.value?.replace(/[\\<>@#&!]/g, '');
     try {
       switch (args.method) {
       case 'set':
         switch (key) {
         case 'actionsChannel':
         case 'modlogsChannel':
+        case 'suggestionsChannel': 
           const channel = await message.guild.channels.fetch(id).catch(() => null);
           if (!channel) return message.reply(embeds.error('Invalid channel'));
-          const val = await getSetting(message.guild.id, 'loggingChannels');
-          val[key] = id;
-          await setSetting(message.guild.id, 'loggingChannels', val);
+          await setSetting(message.guild.id, key, id);
           break;
         case 'mutedRole':
           const role = await message.guild.roles.fetch(id).catch(() => null);
@@ -134,9 +134,17 @@ export default class ConfigCommand extends Command {
           return message.reply(embeds.error('This key cannot be used with remove'));
         }
         break;
+      case 'clear':
+        const prevVal = await getSetting(message.guild.id, key as keyof GuildConfigModel);
+        await setSetting(message.guild.id, key as keyof GuildConfigModel, Array.isArray(prevVal) ? [] : '');
+        break;
       }
+
       message.reply(embeds.success(`Succesfully ${args.method === 'remove' ? `removed ${args.value} from` :
-        args.method === 'add' ? `added ${args.value} to` : 'set'} ${key} ${args.method === 'set' ? `to ${args.value}` : ''}`));
+        args.method === 'add' ? `added ${args.value} to` : args.method === 'clear' ? 'cleared' : 
+          'set'} ${key} ${args.method === 'set' ? `to ${args.value}` : ''}`)
+      );
+
     } catch (e) {
       message.reply(embeds.error('Something went from while changin the config.'));
       logError(e as Error);

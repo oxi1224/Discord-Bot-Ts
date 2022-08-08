@@ -43,3 +43,6 @@ export const whsRules = [
   '» *Cross-trading*',
   '**In general, just be a good person. Think if your mom was here, would she approve?**'
 ];
+
+// eslint-disable-next-line no-useless-escape
+export const URLRegex = /((?:(?:http?|ftp)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi;

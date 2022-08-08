@@ -5,11 +5,11 @@ import { client } from "../../bot.js";
 export async function getSetting<k extends keyof GuildConfigModel>(
   guildId: Snowflake, 
   setting: k
-): Promise<GuildConfigModel[k]> {
+): Promise<(GuildConfigModel | GuildConfig)[k]> {
   return (client.guildConfigCache.get(guildId) ?? (await GuildConfig.findByPk(guildId) ?? await GuildConfig.create({ id: guildId })))[setting];
 }
 
-export async function getConfig(guildId: Snowflake): Promise<GuildConfigModel> {
+export async function getConfig(guildId: Snowflake): Promise<GuildConfigModel | GuildConfig> {
   return client.guildConfigCache.get(guildId) ?? (await GuildConfig.findByPk(guildId) ?? await GuildConfig.create({ id: guildId }));
 }
 

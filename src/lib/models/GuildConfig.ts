@@ -33,9 +33,19 @@ export class GuildConfig extends Model {
   declare lockdownChannels: Snowflake[];
 
   /**
-   * Channels to which info will be logged.
+   * The channel to which modlogs will be posted to.
    */
-  declare loggingChannels: { [key: string]: Snowflake };
+  declare modlogsChannel: Snowflake;
+
+  /**
+   * The channel to which action logs will be posted to.
+   */
+  declare actionsChannel: Snowflake;
+
+  /**
+   * The channel where suggestions will be sent, if null suggest doesnt work.
+   */
+  declare suggestionsChannel: Snowflake;
 
   public static initialize(sequelize: Sequelize) {
     GuildConfig.init({
@@ -45,7 +55,9 @@ export class GuildConfig extends Model {
       commandChannels: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: true, defaultValue: [] },
       automodImmune: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: true, defaultValue: [] },
       lockdownChannels: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: true, defaultValue: [] },
-      loggingChannels: { type: DataTypes.JSONB, allowNull: false, defaultValue: {} }
+      modlogsChannel: { type: DataTypes.STRING, allowNull: true },
+      actionsChannel: { type: DataTypes.STRING, allowNull: true },
+      suggestionsChannel: { type: DataTypes.STRING, allowNull: true },
     }, { sequelize });
   }
 }
@@ -57,9 +69,11 @@ export interface GuildConfigModel {
   commandChannels: Snowflake[],
   automodImmune: Snowflake[],
   lockdownChannels: Snowflake[],
-  loggingChannels: { [key: string]: Snowflake },
+  modlogsChannel: Snowflake,
+  actionsChannel: Snowflake,
+  suggestionsChannel: Snowflake,
 }
-export const validConfigKeys: string[] = ['mutedRole', 'prefix', 'modlogsChannel', 'actionsChannel', 'commandChannels', 'automodImmune', 'lockdownChannels'];
+export const validConfigKeys: string[] = ['mutedRole', 'prefix', 'modlogsChannel', 'actionsChannel', 'commandChannels', 'automodImmune', 'lockdownChannels', 'suggestionsChannel'];
 export const guildConfigKeysMap: Map<string, string> = (() => {
   const map: Map<string, string> = new Map();
   validConfigKeys.forEach(key => {

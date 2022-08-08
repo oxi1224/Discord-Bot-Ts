@@ -38,7 +38,7 @@ export default class PurgeCommand extends Command {
     if (!message.channel?.messages) return;
     if (!args.count || args.count < 1 || args.count > 100) return message.reply(embeds.error('Invalid count, must be between 1 and 100'));
     const author = await message.guild.members.fetch(message.member as GuildMember);
-    const channelId = (await getSetting(message.guild.id, 'loggingChannels')).modlogsChannel;
+    const channelId = (await getSetting(message.guild.id, 'modlogsChannel'));
     const channel = channelId ? await message.guild.channels.fetch(channelId).catch(() => null) : null;
     const embed = new EmbedBuilder()
       .setTitle(`Action: purge`)

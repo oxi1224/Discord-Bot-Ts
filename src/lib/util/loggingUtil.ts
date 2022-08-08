@@ -55,7 +55,7 @@ export async function sendModlog(guild: Guild, options: Omit<PunishmentInfo, 'gu
   if (fields.length % 2 !== 0) fields.push({ name: '\u200B', value: '\u200B', inline: true });
   embed.setFields(fields);
 
-  const channelId = (await getSetting(guild.id, 'loggingChannels')).modlogsChannel;
+  const channelId = (await getSetting(guild.id, 'modlogsChannel'));
   if (!channelId) return;
   return (await guild.channels.fetch(channelId) as TextChannel).send({ embeds: [embed] });
 }
@@ -67,7 +67,7 @@ export async function logAction(guild: Guild, action: string, fields: EmbedField
     .setTitle(`Action: ${action}`)
     .setFields(fields);
 
-  const channelId = (await getSetting(guild.id, 'loggingChannels')).actionsChannel;
+  const channelId = (await getSetting(guild.id, 'actionsChannel'));
   if (!channelId) return;
   return (await guild.channels.fetch(channelId) as TextChannel).send({ embeds: [embed] });
 }

@@ -15,3 +15,4 @@ export { default as HelpCommand } from './info/help.js';
 export { default as UserCommand } from './info/user.js';
 export { default as AvatarCommand } from './info/avatar.js';
 export { default as SetCommand } from './config/config.js';
+export { default as SuggestCommand } from './other/suggest.js';
