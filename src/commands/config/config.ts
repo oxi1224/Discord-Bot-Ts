@@ -46,8 +46,7 @@ export default class ConfigCommand extends Command {
       ],
       description: 'Changes a config value.',
       extraInfo: `» **Valid methods**: set, add, remove, clear.
-» **Valid keys**: ${validConfigKeys.join(', ')}
-» **Every value instead of prefix is a discord snowflake (ID).**`,
+» **Valid keys**: ${validConfigKeys.join(', ')}`,
       usage: 'config <method> <key> <value>',
       examples: ['config set prefix -'],
       category: 'Config',
