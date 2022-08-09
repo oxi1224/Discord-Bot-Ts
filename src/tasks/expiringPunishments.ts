@@ -1,7 +1,7 @@
 import { colors, ExpiringPunishments, Task, sendModlog, createModlogsEntry, PunishmentType, getConfig } from "#lib";
 import { TimeInMs } from "#base";
 import { Op } from "sequelize";
-import { EmbedBuilder, PermissionFlagsBits, TextChannel } from "discord.js";
+import { Collection, EmbedBuilder, PermissionFlagsBits, TextChannel } from "discord.js";
 
 export default class RemoveExpiringPunishments extends Task {
   constructor() {
@@ -30,7 +30,7 @@ export default class RemoveExpiringPunishments extends Task {
       const embed = new EmbedBuilder()
         .setTimestamp()
         .setColor(colors.base)
-        .setTitle(`You've been un${punishment.type}${punishment.type.endsWith('e') ? 'd' : 'ed'} in ${guild}${channel ? `from ${channel.name}` : ''}`)
+        .setTitle(`You've been un${punishment.type}${punishment.type.endsWith('e') ? 'd' : 'ed'} in ${guild}${channel ? ` from ${channel.name}` : ''}`)
         .setDescription("Reason: ``Time's up!``");
       const entry = await createModlogsEntry(guild, {
         moderatorId: botMember.id,
@@ -66,7 +66,7 @@ export default class RemoveExpiringPunishments extends Task {
         victimId: punishment.victimId,
         type: `un${punishment.type}` as PunishmentType,
         reason: "Time's up!",
-        extraInfo: channel ? `Channel: ${channel}` : undefined
+        extraInfo: channel instanceof Collection ? undefined : `Channel: ${channel}`
       });
       await victim.send({ embeds: [embed] }).catch(() => null);
       await punishment.destroy();

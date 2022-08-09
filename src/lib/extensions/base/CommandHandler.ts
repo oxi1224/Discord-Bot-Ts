@@ -15,7 +15,7 @@ export class CommandHandler extends BaseCommandHandler {
     const automodImmune = config.automodImmune;
     if (!message.content.startsWith(prefix) || message.author.bot) return;    
 
-    const commandName = message.content.split(' ').shift()?.replace(prefix, '');
+    const commandName = message.content.split(' ').shift()?.replace(prefix, '').toLowerCase();
     if (this.aliasReplacement) commandName?.replace(this.aliasReplacement, '');
     const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName ?? ''));
     if (!command) return;
