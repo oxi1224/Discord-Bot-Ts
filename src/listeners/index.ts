@@ -7,3 +7,4 @@ export * from './guild/guildCreate.js';
 export * from './guild/guildDelete.js';
 export * from './guild/guildMemberAdd.js';
 export * from './automod/scamLink.js';
+export * from './automod/spam.js';
