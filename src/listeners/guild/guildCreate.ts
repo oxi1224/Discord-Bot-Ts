@@ -20,6 +20,6 @@ export class GuildCreate extends Listener {
       .setTimestamp()
       .setTitle(`Joined ${guild}`)
       .setDescription(`Member count: ${guild.memberCount}`);
-    channel.send({ embeds: [embed] });
+    channel?.send({ embeds: [embed] });
   }
 }

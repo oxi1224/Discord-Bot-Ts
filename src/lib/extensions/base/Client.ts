@@ -13,6 +13,7 @@ import { type Snowflake } from 'discord.js';
 export class Client extends CustomClient {
   public db: Sequelize;
   public guildConfigCache: Map<Snowflake, GuildConfigModel> = new Map();
+  public enviroment: string;
   public override commandHandler: CommandHandler;
   public override taskHandler: TaskHandler;
   public override listenerHandler: ListenerHandler;
@@ -21,7 +22,8 @@ export class Client extends CustomClient {
     super({
       intents: Object.keys(GatewayIntentBits)
         .map((i) => (typeof i === 'string' ? GatewayIntentBits[i as keyof typeof GatewayIntentBits] : i))
-        .reduce((acc, p) => acc | p, 0)
+        .reduce((acc, p) => acc | p, 0),
+      
     }, {
       owners: ['344452070360875008']
     });
@@ -50,6 +52,8 @@ export class Client extends CustomClient {
     this.listenerHandler = new ListenerHandler(this, {
       listenerExportFile: '../../listeners/index.js'
     });
+
+    this.enviroment = process.argv.slice(2).join('');
 
     this.commandHandler.on('slashInit', interaction => console.log(`Initialized ${interaction.name} (/) command.`));
     this.commandHandler.on('slashLoad', () => console.log('All (/) commands loaded.'));

@@ -6,11 +6,12 @@ import 'dotenv/config';
 export default class Stats extends Task {
   constructor() {
     super('stats', {
-      interval: TimeInMs.Second * 10
+      interval: TimeInMs.Second * 60
     });
   }
 
   public override async execute() {
+    if (this.client.enviroment === 'dev') return;
     const guild = await this.client.guilds.fetch('508779434929815554');
     const playerCountChannel = await guild.channels.fetch('989158296185368626');
     const memberCountChannel = await guild.channels.fetch('989158452800655410');

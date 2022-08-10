@@ -36,7 +36,7 @@ export default class SuggestCommand extends Command {
       .setTitle(`Author: ${author.user.username}#${author.user.discriminator}`)
       .setThumbnail(author.displayAvatarURL())
       .setFields({ name: 'Suggestion', value: `\`\`${args.content}\`\``, inline: false })
-      .setFooter({ text: `ID: ${author.id}` })
+      .setFooter({ text: `Suggest something with the suggest command!` })
       .setColor(colors.base)
       .setTimestamp();
     return (suggestionsChannel as TextBasedChannel).send({ embeds: [embed] }).catch((e) => logError(e as Error));

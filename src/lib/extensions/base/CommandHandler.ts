@@ -6,8 +6,8 @@ import { embeds } from '#lib';
 import { getConfig } from "../../util/guildUtil.js";
 
 export class CommandHandler extends BaseCommandHandler {
-
   public override async handle(message: Message) {
+    if (!message.inGuild()) return;
     if (!message.guild?.available) return;
     const config = await getConfig(message.guild.id);
     const prefix = config.prefix ?? super.prefix;
@@ -30,6 +30,7 @@ export class CommandHandler extends BaseCommandHandler {
   }
 
   public override async handleSlash(interaction: Interaction<CacheType>) {
+    if (!interaction.inGuild()) return;
     if (!(interaction.type === InteractionType.ApplicationCommand)) return;
     if (!interaction.guild?.available) return;
 

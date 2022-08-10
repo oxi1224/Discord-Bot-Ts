@@ -9,6 +9,7 @@ export class unhandledRejection extends Listener {
   }
   
   public override async execute(err: Error) {
+    if (this.client.enviroment === 'dev') throw err;
     if (!err) return;
     return await logError(err);
   }   

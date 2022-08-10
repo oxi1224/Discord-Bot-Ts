@@ -9,21 +9,21 @@ export const colors: {[key: string]: ColorResolvable} = Object.freeze({
 } as const);
 
 export const emotes: {[key: string]: EmojiResolvable} = Object.freeze({
-  error: "<:error:980866363461599292>",
-  success: "<:success:980866382323396723>",
-  info: "<:info:980866381283201025>",
-  first: "<:first:1005496736053215292>",
-  back: "<:back:1005496734497128528>",
-  stop: "<:stop:1005496740297838693>",
-  next: "<:next:1005496738691432490>",
-  last: "<:last:1005497936257495120>"
+  error: "<:error:1006894373256052737>",
+  success: "<:success:1006894370580078632>",
+  info: "<:info:1006894375499997285>",
+  first: "<:first:1006894447541362799> ",
+  back: "<:back:1006894446140461137> ",
+  stop: "<:stop:1006894444932513822>",
+  next: "<:next:1006894450892603442>",
+  last: "<:last:1006894449646915615>"
 });
 
 export const otherIDs = {
-  parentGuild: "613024666079985702",
-  mainError: "980478015412772884",
-  guildCreateChannel: "1002916757222195280",
-  guildDeleteChannel: "1002916792831844422" 
+  parentGuild: "1006535421662076948",
+  mainError: "1006890431243636837",
+  guildCreateChannel: "1006890485530513428",
+  guildDeleteChannel: "1006890591570886746" 
 };
 
 export const whsRules = [

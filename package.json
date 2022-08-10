@@ -8,9 +8,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "yarn build && yarn start:raw",
+    "start": "yarn build && yarn start:raw prod",
     "start:raw": "node ./dist/src/bot.js",
-    "dev": "yarn tsc && yarn start:raw",
+    "dev": "yarn tsc && yarn start:raw dev",
     "build": "yarn rimraf dist && yarn tsc",
     "lint": "yarn eslint --ext .ts src"
   },

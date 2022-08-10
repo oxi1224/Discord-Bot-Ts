@@ -21,6 +21,6 @@ export class GuildDelete extends Listener {
       .setTimestamp()
       .setTitle(`Left ${guild}`)
       .setDescription(`Member count: ${guild.memberCount}`);
-    channel.send({ embeds: [embed] });
+    channel?.send({ embeds: [embed] });
   }
 }
