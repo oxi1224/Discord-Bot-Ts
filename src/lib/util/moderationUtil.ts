@@ -1,9 +1,9 @@
 import { GuildMember } from "discord.js";
 import { PermissionFlagsBits } from "discord-api-types/v10";
 
-export function arrayPermissionCheck<k extends keyof typeof PermissionFlagsBits>(
+export function checkMissingPerms<k extends keyof typeof PermissionFlagsBits>(
   member: GuildMember | null,
-  perms: (typeof PermissionFlagsBits[k])[]): string[] | true {
+  perms: (typeof PermissionFlagsBits[k])[]): string[] | null {
   const missingPerms: string[] = [];
 
   perms.forEach(perm => {
@@ -12,5 +12,5 @@ export function arrayPermissionCheck<k extends keyof typeof PermissionFlagsBits>
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     missingPerms.push(valueToAdd!);
   });
-  return missingPerms.length === 0 ? true : missingPerms;
+  return missingPerms.length === 0 ? null : missingPerms;
 }

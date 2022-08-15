@@ -46,6 +46,11 @@ export class GuildConfig extends Model {
    * The channel where suggestions will be sent, if null suggest doesnt work.
    */
   declare suggestionsChannel: Snowflake;
+  
+  /**
+   * The channel where messages with 5 star reactions will go
+   */
+  declare starboardChannel: Snowflake;
 
   public static initialize(sequelize: Sequelize) {
     GuildConfig.init({
@@ -58,6 +63,7 @@ export class GuildConfig extends Model {
       modlogsChannel: { type: DataTypes.STRING, allowNull: true },
       actionsChannel: { type: DataTypes.STRING, allowNull: true },
       suggestionsChannel: { type: DataTypes.STRING, allowNull: true },
+      starboardChannel: { type: DataTypes.STRING, allowNull: true },
     }, { sequelize });
   }
 }
@@ -72,8 +78,9 @@ export interface GuildConfigModel {
   modlogsChannel: Snowflake,
   actionsChannel: Snowflake,
   suggestionsChannel: Snowflake,
+  starboardChannel: Snowflake,
 }
-export const validConfigKeys: string[] = ['mutedRole', 'prefix', 'modlogsChannel', 'actionsChannel', 'commandChannels', 'automodImmune', 'lockdownChannels', 'suggestionsChannel'];
+export const validConfigKeys: string[] = ['mutedRole', 'prefix', 'modlogsChannel', 'actionsChannel', 'commandChannels', 'automodImmune', 'lockdownChannels', 'suggestionsChannel', 'startboardChannel'];
 export const guildConfigKeysMap: Map<string, string> = (() => {
   const map: Map<string, string> = new Map();
   validConfigKeys.forEach(key => {

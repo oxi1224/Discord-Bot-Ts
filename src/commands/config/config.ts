@@ -70,11 +70,13 @@ export default class ConfigCommand extends Command {
       switch (args.method) {
       case 'set':
         switch (key) {
+        case 'starboardChannel':
         case 'actionsChannel':
         case 'modlogsChannel':
-        case 'suggestionsChannel': 
+        case 'suggestionsChannel':
           const channel = await message.guild.channels.fetch(id).catch(() => null);
           if (!channel) return message.reply(embeds.error('Invalid channel'));
+          if (!channel.isTextBased()) return message.reply(embeds.error('Channel must be text based.'));
           await setSetting(message.guild.id, key, id);
           break;
         case 'mutedRole':
@@ -95,6 +97,7 @@ export default class ConfigCommand extends Command {
         case 'lockdownChannels':
           const channel = await message.guild.channels.fetch(id).catch(() => null);
           if (!channel) return message.reply(embeds.error('Invalid channel'));
+          if (!channel.isTextBased()) return message.reply(embeds.error('Channel must be text based.'));
           const channelArr = await getSetting(message.guild.id, key);
           if (channelArr.some(str => str === id)) return message.reply(embeds.error(`${id} already is in ${key}`));
           channelArr.push(id);
@@ -118,6 +121,7 @@ export default class ConfigCommand extends Command {
         case 'lockdownChannels':
           const channel = await message.guild.channels.fetch(id).catch(() => null);
           if (!channel) return message.reply(embeds.error('Invalid channel'));
+          if (!channel.isTextBased()) return message.reply(embeds.error('Channel must be text based.'));
           const channelArr = await getSetting(message.guild.id, key);
           if (!channelArr.some(str => str === id)) return message.reply(embeds.error(`${id} is not in ${key}`));
           await setSetting(message.guild.id, key, channelArr.filter(str => str === id));
@@ -138,12 +142,10 @@ export default class ConfigCommand extends Command {
         await setSetting(message.guild.id, key as keyof GuildConfigModel, Array.isArray(prevVal) ? [] : '');
         break;
       }
-
       message.reply(embeds.success(`Succesfully ${args.method === 'remove' ? `removed ${args.value} from` :
         args.method === 'add' ? `added ${args.value} to` : args.method === 'clear' ? 'cleared' : 
           'set'} ${key} ${args.method === 'set' ? `to ${args.value}` : ''}`)
       );
-
     } catch (e) {
       message.reply(embeds.error('Something went from while changin the config.'));
       logError(e as Error);

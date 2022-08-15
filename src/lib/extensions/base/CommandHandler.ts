@@ -1,7 +1,7 @@
 import { BaseCommandHandler, ParsedArgs } from "#base";
 import { emotes } from "../../common/constants.js";
 import { CacheType, Interaction, Message, InteractionType, GuildMember } from "discord.js";
-import { arrayPermissionCheck } from "../../util/moderationUtil.js";
+import { checkMissingPerms } from "../../util/moderationUtil.js";
 import { embeds } from '#lib';
 import { getConfig } from "../../util/guildUtil.js";
 
@@ -20,8 +20,8 @@ export class CommandHandler extends BaseCommandHandler {
     const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName ?? ''));
     if (!command) return;
 
-    const botPermsCheck = arrayPermissionCheck(await message.guild.members.fetchMe(), command.clientPermissions);
-    if (botPermsCheck !== true) return message.reply(embeds.error(`I am missing the ${botPermsCheck.join(', ')}permissions`)); 
+    const missingPerms = checkMissingPerms(await message.guild.members.fetchMe(), command.clientPermissions);
+    if (missingPerms) return message.reply(embeds.error(`I am missing the ${missingPerms.join(', ')} permissions`)); 
     if (!message.member?.permissions.has(command.userPermissions)) return message.react(emotes.error);
     if (!commandChannels.includes(message.channelId) && !automodImmune.includes(message.author.id) && !message.member.permissions.has('Administrator')) return message.react(emotes.error);
 
@@ -41,8 +41,8 @@ export class CommandHandler extends BaseCommandHandler {
     const command = this.commandArray.find(cmd => cmd.aliases.includes(commandName));
     if (!command) return;
 
-    const botPermsCheck = arrayPermissionCheck(await interaction.guild.members.fetchMe(), command.clientPermissions);
-    if (botPermsCheck !== true) return interaction.reply(embeds.error(`I am missing the ${botPermsCheck.join(', ')}permissions`));
+    const missingPerms = checkMissingPerms(await interaction.guild.members.fetchMe(), command.clientPermissions);
+    if (missingPerms) return interaction.reply(embeds.error(`I am missing the ${missingPerms.join(', ')} permissions`));
     if (!((interaction.member as GuildMember).permissions.has(command.userPermissions))) return interaction.reply({ content: 'Insufficient Permissions', ephemeral: true });
     if (!commandChannels.includes(interaction.channelId) && !automodImmune.includes(interaction.user.id) && !(interaction.member as GuildMember).permissions.has('Administrator')) return interaction.reply({
       content: 'Please use commands in appropriate channel(s).',

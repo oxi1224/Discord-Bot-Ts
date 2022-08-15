@@ -1,4 +1,4 @@
-import { ParsedDuration, TimeInMs } from '#base';
+import { TimeInMs } from '#base';
 import { Message, User, EmbedBuilder, CommandInteraction, EmbedField, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentEmojiResolvable } from 'discord.js';
 import { ApplicationCommandOptionType, PermissionFlagsBits } from "discord-api-types/v10";
 import { Command, embeds, logError, colors, Modlogs, emotes } from '#lib';
@@ -27,8 +27,6 @@ export default class ModlogsCommand extends Command {
 
   public override async execute(message: Message | CommandInteraction, args: {
     user: User,
-    duration: ParsedDuration,
-    reason: string,
   }) {
     if (!message.guild?.available) return;
     if (!args.user) return message.reply(embeds.error('Invalid user'));
